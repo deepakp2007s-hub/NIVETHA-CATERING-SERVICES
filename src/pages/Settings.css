@@ -1,0 +1,647 @@
+/* =====================================================
+   SETTINGS PAGE
+===================================================== */
+
+.settings-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 28px;
+  background: #f7f8fc;
+  color: #1f2937;
+  box-sizing: border-box;
+}
+
+.settings-page-header {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 26px;
+}
+
+.settings-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #8b1e3f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.settings-page-header h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.settings-page-header p {
+  margin: 8px 0 0;
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.settings-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #eaecf0;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 4px 17px rgba(15, 23, 42, 0.045);
+  box-sizing: border-box;
+}
+
+.settings-password-card,
+.settings-danger-card {
+  grid-column: 1 / -1;
+}
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.settings-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.settings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: #f5eaf0;
+  font-size: 19px;
+}
+
+.settings-card-header h2 {
+  margin: 0;
+  color: #273246;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.settings-card-header p {
+  margin: 5px 0 0;
+  color: #7b8494;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+.language-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.language-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 82px;
+  padding: 15px;
+  border: 1px solid #e3e6eb;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #344054;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.language-option:hover {
+  border-color: #cfa5b4;
+  background: #fffafb;
+  transform: translateY(-1px);
+}
+
+.language-option.active {
+  border-color: #8b1e3f;
+  background: #fff8fa;
+  box-shadow: 0 0 0 2px rgba(139, 30, 63, 0.07);
+}
+
+.language-option span {
+  color: #273246;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.language-option small {
+  margin-top: 5px;
+  color: #98a2b3;
+  font-size: 10px;
+}
+
+.language-option strong {
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #8b1e3f;
+  color: #ffffff;
+  font-size: 11px;
+}
+
+/* =====================================================
+   SECONDARY BUTTON
+===================================================== */
+
+.settings-secondary-button {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 12px;
+  padding: 0 15px;
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #475467;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.settings-secondary-button:hover {
+  border-color: #8b1e3f;
+  background: #fffafb;
+  color: #8b1e3f;
+}
+
+/* =====================================================
+   TOGGLE ROW
+===================================================== */
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 0;
+  border-top: 1px solid #eef0f3;
+}
+
+.settings-toggle-row:first-of-type {
+  border-top: 0;
+}
+
+.settings-toggle-row > div {
+  min-width: 0;
+}
+
+.settings-toggle-row strong {
+  display: block;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.settings-toggle-row span {
+  display: block;
+  margin-top: 5px;
+  color: #98a2b3;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =====================================================
+   TOGGLE
+===================================================== */
+
+.settings-toggle {
+  position: relative;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 30px;
+  outline: none;
+  background: #d6d9de;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.settings-toggle span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.settings-toggle.active {
+  background: #8b1e3f;
+}
+
+.settings-toggle.active span {
+  transform: translateX(20px);
+}
+
+/* =====================================================
+   PASSWORD FORM
+===================================================== */
+
+.settings-password-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.settings-field {
+  min-width: 0;
+}
+
+.settings-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #344054;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.settings-field input {
+  width: 100%;
+  min-height: 43px;
+  padding: 0 12px;
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+  outline: none;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: inherit;
+  font-size: 12px;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.settings-field input::placeholder {
+  color: #a0a8b5;
+}
+
+.settings-field input:hover {
+  border-color: #c8cdd5;
+}
+
+.settings-field input:focus {
+  border-color: #8b1e3f;
+  box-shadow: 0 0 0 3px rgba(139, 30, 63, 0.08);
+}
+
+/* =====================================================
+   PRIMARY BUTTON
+===================================================== */
+
+.settings-primary-button {
+  grid-column: 1 / -1;
+  min-height: 44px;
+  margin-top: 2px;
+  padding: 0 18px;
+  border: 1px solid #8b1e3f;
+  border-radius: 8px;
+  background: #8b1e3f;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.settings-primary-button:hover:not(:disabled) {
+  background: #741832;
+  box-shadow: 0 5px 15px rgba(139, 30, 63, 0.17);
+  transform: translateY(-1px);
+}
+
+.settings-primary-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.settings-primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* =====================================================
+   ALERTS
+===================================================== */
+
+.settings-alert {
+  margin-bottom: 17px;
+  padding: 11px 13px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.settings-alert-error {
+  border: 1px solid #f1c2c2;
+  background: #fff6f6;
+  color: #991b1b;
+}
+
+.settings-alert-success {
+  border: 1px solid #b7e4c7;
+  background: #f0fbf4;
+  color: #166534;
+}
+
+/* =====================================================
+   DANGER / ACCOUNT
+===================================================== */
+
+.settings-danger-card {
+  border-color: #f0e1e1;
+}
+
+.settings-danger-icon {
+  background: #fff1f1;
+}
+
+.settings-logout-button {
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #e8b9b9;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #b42318;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.settings-logout-button:hover:not(:disabled) {
+  border-color: #d99494;
+  background: #fff6f6;
+  color: #991b1b;
+  transform: translateY(-1px);
+}
+
+.settings-logout-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* =====================================================
+   FOCUS
+===================================================== */
+
+.language-option:focus-visible,
+.settings-secondary-button:focus-visible,
+.settings-toggle:focus-visible,
+.settings-field input:focus-visible,
+.settings-primary-button:focus-visible,
+.settings-logout-button:focus-visible {
+  outline: 3px solid rgba(139, 30, 63, 0.16);
+  outline-offset: 2px;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 950px) {
+  .settings-page {
+    padding: 22px;
+  }
+
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-password-card,
+  .settings-danger-card {
+    grid-column: auto;
+  }
+
+  .settings-password-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .settings-primary-button {
+    grid-column: 1 / -1;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+  .settings-page {
+    padding: 16px;
+  }
+
+  .settings-page-header {
+    margin-bottom: 20px;
+  }
+
+  .settings-page-header h1 {
+    font-size: 25px;
+  }
+
+  .settings-page-header p {
+    font-size: 11px;
+  }
+
+  .settings-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .settings-card-header {
+    gap: 11px;
+    margin-bottom: 18px;
+  }
+
+  .settings-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+  }
+
+  .settings-card-header h2 {
+    font-size: 15px;
+  }
+
+  .settings-card-header p {
+    font-size: 10px;
+  }
+
+  .language-options {
+    gap: 8px;
+  }
+
+  .language-option {
+    min-height: 75px;
+    padding: 12px;
+  }
+
+  .language-option span {
+    font-size: 13px;
+  }
+
+  .settings-toggle-row {
+    gap: 12px;
+    padding: 13px 0;
+  }
+
+  .settings-toggle-row strong {
+    font-size: 11px;
+  }
+
+  .settings-toggle-row span {
+    font-size: 9px;
+  }
+
+  .settings-password-form {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .settings-primary-button {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .settings-logout-button {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 420px) {
+  .settings-page {
+    padding: 12px;
+  }
+
+  .settings-page-header h1 {
+    font-size: 22px;
+  }
+
+  .settings-card {
+    padding: 15px;
+  }
+
+  .settings-card-header {
+    align-items: flex-start;
+  }
+
+  .settings-icon {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .settings-card-header h2 {
+    font-size: 14px;
+  }
+
+  .language-options {
+    grid-template-columns: 1fr;
+  }
+
+  .language-option {
+    min-height: 65px;
+  }
+
+  .settings-toggle-row {
+    align-items: center;
+  }
+
+  .settings-toggle-row > div {
+    padding-right: 5px;
+  }
+
+  .settings-toggle {
+    flex-basis: 42px;
+    width: 42px;
+  }
+
+  .settings-toggle.active span {
+    transform: translateX(18px);
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .language-option,
+  .settings-secondary-button,
+  .settings-toggle,
+  .settings-toggle span,
+  .settings-field input,
+  .settings-primary-button,
+  .settings-logout-button {
+    transition: none;
+  }
+}

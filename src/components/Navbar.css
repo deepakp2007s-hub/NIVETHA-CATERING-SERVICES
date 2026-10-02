@@ -1,0 +1,463 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   NAVBAR
+========================================================= */
+
+.anna-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+
+  background: #ffffff;
+  border-bottom: 1px solid #eee7ea;
+
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+}
+
+.anna-navbar-inner {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 72px;
+
+  padding: 0 24px;
+
+  gap: 24px;
+}
+
+/* =========================================================
+   THREE BAR MENU
+========================================================= */
+
+.anna-menu-button {
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid #eadfe3;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #8b1538;
+
+  font-size: 1.35rem;
+  line-height: 1;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.anna-menu-button:hover {
+  border-color: #8b1538;
+  background: #fff1f5;
+  color: #8b1538;
+}
+
+.anna-menu-button:active {
+  transform: scale(0.95);
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.anna-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  flex-shrink: 0;
+
+  color: #2d1b22;
+}
+
+.anna-brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 43px;
+  height: 43px;
+
+  border-radius: 12px;
+
+  background: #8b1538;
+  color: #ffffff;
+
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+
+  box-shadow: 0 5px 14px rgba(139, 21, 56, 0.18);
+}
+
+.anna-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.anna-brand-text h1 {
+  margin: 0;
+
+  color: #2d1b22;
+
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+
+  line-height: 1.1;
+}
+
+.anna-brand-text span {
+  margin-top: 3px;
+
+  color: #8a8186;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.67rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.anna-nav {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  flex: 1;
+
+  min-width: 0;
+}
+
+.anna-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  min-height: 40px;
+
+  padding: 8px 11px;
+
+  border-radius: 9px;
+
+  color: #6f6870;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.anna-nav-link:hover {
+  background: #fff1f5;
+  color: #8b1538;
+}
+
+.anna-nav-link.active {
+  background: #fff1f5;
+  color: #8b1538;
+  font-weight: 800;
+}
+
+.anna-nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* =========================================================
+   NAVBAR ACTIONS
+========================================================= */
+
+.anna-navbar-actions {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  margin-left: auto;
+}
+
+.anna-profile-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 5px 10px 5px 5px;
+
+  border: 1px solid #eee4e8;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #2d1b22;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.anna-profile-button:hover {
+  border-color: #dcb8c5;
+  background: #fff8fa;
+}
+
+.anna-profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  background: #8b1538;
+  color: #ffffff;
+
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.anna-profile-name {
+  padding-right: 3px;
+
+  color: #3a3035;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+  .anna-navbar-inner {
+    gap: 16px;
+    padding: 0 18px;
+  }
+
+  .anna-nav {
+    gap: 2px;
+  }
+
+  .anna-nav-link {
+    padding: 8px 8px;
+    font-size: 0.76rem;
+  }
+
+  .anna-brand-text h1 {
+    font-size: 0.98rem;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+  .anna-navbar-inner {
+    min-height: 68px;
+    padding: 0 16px;
+  }
+
+  .anna-menu-button {
+    display: flex;
+  }
+
+  .anna-nav {
+    display: none;
+  }
+
+  .anna-brand {
+    flex: 1;
+  }
+
+  .anna-profile-name {
+    display: none;
+  }
+
+  .anna-profile-button {
+    padding: 4px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+  .anna-navbar-inner {
+    min-height: 64px;
+    padding: 0 12px;
+
+    gap: 10px;
+  }
+
+  .anna-menu-button {
+    width: 40px;
+    height: 40px;
+
+    font-size: 1.25rem;
+  }
+
+  .anna-brand {
+    gap: 8px;
+  }
+
+  .anna-brand-logo {
+    width: 39px;
+    height: 39px;
+
+    border-radius: 10px;
+
+    font-size: 1.15rem;
+  }
+
+  .anna-brand-text h1 {
+    font-size: 0.92rem;
+  }
+
+  .anna-brand-text span {
+    font-size: 0.6rem;
+  }
+
+  .anna-profile-avatar {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  .anna-navbar-inner {
+    min-height: 60px;
+    padding: 0 10px;
+  }
+
+  .anna-menu-button {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 9px;
+
+    font-size: 1.15rem;
+  }
+
+  .anna-brand-logo {
+    width: 36px;
+    height: 36px;
+
+    font-size: 1.05rem;
+  }
+
+  .anna-brand-text h1 {
+    font-size: 0.84rem;
+  }
+
+  .anna-brand-text span {
+    font-size: 0.56rem;
+  }
+
+  .anna-profile-avatar {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+  .anna-navbar-inner {
+    padding: 0 8px;
+    gap: 8px;
+  }
+
+  .anna-brand-text span {
+    display: none;
+  }
+
+  .anna-menu-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .anna-brand-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .anna-profile-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .anna-menu-button:hover {
+    border-color: #eadfe3;
+    background: #ffffff;
+    color: #8b1538;
+  }
+
+  .anna-nav-link:hover {
+    background: transparent;
+    color: #6f6870;
+  }
+
+  .anna-nav-link.active:hover {
+    background: #fff1f5;
+    color: #8b1538;
+  }
+
+  .anna-profile-button:hover {
+    border-color: #eee4e8;
+    background: #ffffff;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-menu-button,
+  .anna-nav-link,
+  .anna-profile-button {
+    transition: none;
+  }
+}

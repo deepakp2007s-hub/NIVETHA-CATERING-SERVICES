@@ -1,0 +1,568 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   RESPONSIVE DESIGN
+========================================================= */
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1600px) {
+  .app-content {
+    padding: 30px 36px;
+  }
+
+  .page-container {
+    max-width: 1600px;
+  }
+
+  .dashboard-grid {
+    gap: 22px;
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (max-width: 1399px) {
+  .app-content {
+    padding: 24px;
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-width: 235px;
+  }
+
+  .app-main {
+    margin-left: var(--sidebar-width);
+  }
+
+  .app-content {
+    padding: 22px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-details-grid,
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   TABLET LANDSCAPE
+========================================================= */
+
+@media (max-width: 1024px) {
+  .app-layout {
+    width: 100%;
+  }
+
+  .app-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .app-content {
+    padding: 20px;
+  }
+
+  .page-container {
+    width: 100%;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   TABLET PORTRAIT
+========================================================= */
+
+@media (max-width: 900px) {
+  .app-content {
+    padding: 18px;
+  }
+
+  .page-header {
+    gap: 15px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-card {
+    padding: 19px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+}
+
+/* =========================================================
+   MOBILE / TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .app-content {
+    width: 100%;
+    padding: 16px;
+  }
+
+  /* ---------- Page Header ---------- */
+
+  .page-header,
+  .dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .page-header .btn,
+  .dashboard-header .btn {
+    width: 100%;
+  }
+
+  /* ---------- Dashboard ---------- */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .dashboard-two-column {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* ---------- Food ---------- */
+
+  .food-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .food-card-image {
+    height: 220px;
+  }
+
+  /* ---------- Reports ---------- */
+
+  .report-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* ---------- Forms ---------- */
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .form-group.full-width {
+    grid-column: auto;
+  }
+
+  /* ---------- Cards ---------- */
+
+  .app-card,
+  .card {
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  /* ---------- Filter ---------- */
+
+  .filter-bar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-bar .form-control,
+  .filter-bar .btn {
+    width: 100%;
+  }
+
+  .search-wrapper {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* ---------- Details ---------- */
+
+  .booking-details-grid,
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .detail-item,
+  .detail-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .detail-value {
+    text-align: left;
+  }
+
+  /* ---------- Profile ---------- */
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* ---------- Buttons ---------- */
+
+  .app-btn:not(.app-btn-sm),
+  .btn:not(.btn-sm) {
+    min-height: 45px;
+  }
+
+  /* ---------- Modal ---------- */
+
+  .modal-overlay,
+  .modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-content,
+  .modal-box {
+    width: 100%;
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* ---------- Table ---------- */
+
+  .table-container,
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .app-table,
+  .table {
+    min-width: 700px;
+  }
+
+  /* ---------- Footer ---------- */
+
+  .app-footer {
+    padding: 16px;
+  }
+}
+
+/* =========================================================
+   MOBILE LARGE
+========================================================= */
+
+@media (max-width: 600px) {
+  .app-content {
+    padding: 14px;
+  }
+
+  .page-title {
+    font-size: 1.7rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.86rem;
+  }
+
+  .dashboard-welcome h1 {
+    font-size: 1.8rem;
+  }
+
+  .app-card,
+  .card {
+    padding: 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .food-card-image {
+    height: 210px;
+  }
+
+  .notification-item {
+    padding: 15px;
+  }
+
+  .profile-card {
+    padding: 18px;
+  }
+}
+
+/* =========================================================
+   MOBILE SMALL
+========================================================= */
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 12px;
+  }
+
+  .page-title,
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-welcome h1 {
+    font-size: 1.65rem;
+  }
+
+  .dashboard-welcome p {
+    font-size: 0.84rem;
+  }
+
+  .app-card,
+  .card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .stat-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .stat-card-value {
+    font-size: 1.5rem;
+  }
+
+  .food-card {
+    border-radius: 15px;
+  }
+
+  .food-card-image {
+    height: 200px;
+  }
+
+  .food-card-content {
+    padding: 15px;
+  }
+
+  .food-card-actions {
+    flex-direction: column;
+  }
+
+  .food-card-actions .btn,
+  .food-card-actions .app-btn {
+    width: 100%;
+  }
+
+  .selected-food-item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .notification-item {
+    align-items: flex-start;
+    padding: 13px;
+  }
+
+  .modal-content,
+  .modal-box {
+    padding: 18px;
+  }
+
+  .app-footer {
+    padding: 14px 10px;
+    font-size: 0.74rem;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 375px) {
+  .app-content {
+    padding: 10px;
+  }
+
+  .page-title,
+  .page-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .dashboard-welcome h1 {
+    font-size: 1.5rem;
+  }
+
+  .app-card,
+  .card,
+  .stat-card {
+    padding: 12px;
+  }
+
+  .food-card-content {
+    padding: 13px;
+  }
+
+  .food-card-image {
+    height: 180px;
+  }
+
+  .btn,
+  .app-btn {
+    padding: 10px 13px;
+    font-size: 0.82rem;
+  }
+
+  .form-control {
+    min-height: 44px;
+    font-size: 0.88rem;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-width: 900px) and (orientation: landscape) {
+  .app-content {
+    padding: 14px 18px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .food-card-image {
+    height: 180px;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .app-btn,
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:hover,
+  .app-btn:hover,
+  .food-card:hover {
+    transform: none;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

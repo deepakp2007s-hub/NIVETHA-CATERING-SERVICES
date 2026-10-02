@@ -1,0 +1,341 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   FOOTER
+========================================================= */
+
+.anna-footer {
+  width: 100%;
+  margin-top: auto;
+
+  background: #ffffff;
+
+  border-top: 1px solid #eee4e8;
+
+  box-shadow: 0 -2px 12px rgba(45, 27, 34, 0.025);
+}
+
+/* =========================================================
+   FOOTER INNER
+========================================================= */
+
+.anna-footer-inner {
+  width: 100%;
+  max-width: 1440px;
+
+  min-height: 82px;
+
+  margin: 0 auto;
+  padding: 18px 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.anna-footer-brand {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  gap: 10px;
+}
+
+.anna-footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 11px;
+
+  background: #8b1538;
+  color: #ffffff;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size: 1rem;
+  font-weight: 800;
+
+  box-shadow: 0 4px 12px rgba(139, 21, 56, 0.16);
+}
+
+.anna-footer-brand h3 {
+  margin: 0;
+
+  color: #5e1028;
+
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 0.8rem;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.anna-footer-brand p {
+  margin: 3px 0 0;
+
+  color: #8a8186;
+
+  font-family:
+    "Inter",
+    system-ui,
+    sans-serif;
+
+  font-size: 0.64rem;
+  font-weight: 500;
+
+  line-height: 1.2;
+}
+
+/* =========================================================
+   CENTER COPYRIGHT
+========================================================= */
+
+.anna-footer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1;
+
+  gap: 8px;
+
+  color: #888084;
+
+  font-family:
+    "Inter",
+    system-ui,
+    sans-serif;
+
+  font-size: 0.68rem;
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  text-align: center;
+}
+
+.anna-footer-dot {
+  color: #8b1538;
+
+  font-size: 0.8rem;
+}
+
+/* =========================================================
+   CREDIT
+========================================================= */
+
+.anna-footer-credit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-shrink: 0;
+
+  gap: 5px;
+
+  color: #888084;
+
+  font-family:
+    "Inter",
+    system-ui,
+    sans-serif;
+
+  font-size: 0.62rem;
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  white-space: nowrap;
+}
+
+.anna-footer-credit strong {
+  color: #c72c55;
+
+  font-size: 0.72rem;
+
+  line-height: 1;
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+  .anna-footer-inner {
+    padding: 17px 20px;
+
+    gap: 18px;
+  }
+
+  .anna-footer-center {
+    font-size: 0.64rem;
+  }
+
+  .anna-footer-credit {
+    font-size: 0.59rem;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+  .anna-footer-inner {
+    min-height: auto;
+
+    padding: 16px 20px;
+
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 12px 20px;
+  }
+
+  .anna-footer-brand {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .anna-footer-center {
+    flex: 0 1 auto;
+
+    order: 2;
+  }
+
+  .anna-footer-credit {
+    order: 3;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .anna-footer-inner {
+    min-height: auto;
+
+    padding: 18px 12px;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .anna-footer-brand {
+    width: auto;
+  }
+
+  .anna-footer-logo {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+
+    font-size: 0.95rem;
+  }
+
+  .anna-footer-brand h3 {
+    font-size: 0.76rem;
+  }
+
+  .anna-footer-brand p {
+    font-size: 0.6rem;
+  }
+
+  .anna-footer-center {
+    width: 100%;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    font-size: 0.6rem;
+  }
+
+  .anna-footer-credit {
+    justify-content: center;
+
+    font-size: 0.56rem;
+  }
+}
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 375px) {
+  .anna-footer-inner {
+    padding: 16px 10px;
+
+    gap: 8px;
+  }
+
+  .anna-footer-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .anna-footer-brand h3 {
+    font-size: 0.7rem;
+  }
+
+  .anna-footer-brand p {
+    font-size: 0.55rem;
+  }
+
+  .anna-footer-center {
+    font-size: 0.54rem;
+  }
+
+  .anna-footer-credit {
+    font-size: 0.52rem;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .anna-footer {
+    box-shadow: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-footer {
+    scroll-behavior: auto;
+  }
+}

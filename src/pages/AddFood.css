@@ -1,0 +1,803 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ADD FOOD PAGE
+   Responsive: Mobile / Tablet / Laptop / Desktop
+========================================================= */
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.add-food-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px 24px 55px;
+  background: #f7f8fc;
+  box-sizing: border-box;
+}
+
+.add-food-container {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.add-food-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 28px;
+}
+
+.add-food-header-content {
+  min-width: 0;
+}
+
+.add-food-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #e50046;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.add-food-header h1 {
+  margin: 0;
+  color: #18181b;
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.add-food-header p {
+  margin: 9px 0 0;
+  color: #71717a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.add-food-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 45px;
+  padding: 0 17px;
+  border: 1px solid #dedee5;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #38383f;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 750;
+  white-space: nowrap;
+  box-shadow: 0 5px 16px rgba(20, 20, 40, 0.04);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.add-food-back-button span {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.add-food-back-button:hover {
+  border-color: #e50046;
+  background: #fff7fa;
+  color: #e50046;
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+.add-food-alert {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 13px;
+  box-sizing: border-box;
+}
+
+.add-food-alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 31px;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.add-food-alert-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.add-food-alert-content strong {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.add-food-alert-content span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.add-food-alert > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.add-food-error {
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.add-food-error .add-food-alert-icon {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+.add-food-error > button {
+  color: #be123c;
+}
+
+.add-food-error > button:hover {
+  background: #ffe4e6;
+}
+
+.add-food-success {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.add-food-success .add-food-alert-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.add-food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.add-food-card {
+  width: 100%;
+  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #ececf1;
+  border-radius: 19px;
+  box-shadow: 0 8px 28px rgba(20, 20, 40, 0.045);
+  box-sizing: border-box;
+}
+
+.add-food-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f0f0f3;
+}
+
+.add-food-card-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 43px;
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  background: #fff0f5;
+  color: #e50046;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.add-food-card-header h2 {
+  margin: 0;
+  color: #18181b;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.add-food-card-header p {
+  margin: 4px 0 0;
+  color: #71717a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.add-food-form-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 20px;
+}
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.add-food-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.add-food-full-width {
+  grid-column: 1 / -1;
+}
+
+.add-food-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #27272a;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.add-food-field label span {
+  margin-left: 3px;
+  color: #e50046;
+}
+
+.add-food-field input,
+.add-food-field select,
+.add-food-field textarea {
+  width: 100%;
+  border: 1px solid #dedee5;
+  border-radius: 11px;
+  outline: none;
+  background: #fafafd;
+  color: #18181b;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.add-food-field input,
+.add-food-field select {
+  height: 46px;
+  padding: 0 13px;
+}
+
+.add-food-field textarea {
+  min-height: 125px;
+  padding: 12px 13px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.add-food-field input::placeholder,
+.add-food-field textarea::placeholder {
+  color: #a1a1aa;
+}
+
+.add-food-field input:focus,
+.add-food-field select:focus,
+.add-food-field textarea:focus {
+  background: #ffffff;
+  border-color: #e50046;
+  box-shadow:
+    0 0 0 3px rgba(229, 0, 70, 0.08);
+}
+
+.add-food-field input:disabled,
+.add-food-field select:disabled,
+.add-food-field textarea:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.add-food-field small {
+  display: block;
+  margin-top: 6px;
+  color: #909099;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   CHARACTER COUNT
+========================================================= */
+
+.add-food-character-count {
+  align-self: flex-end;
+  margin-top: 5px;
+  color: #909099;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.add-food-field select {
+  appearance: auto;
+  cursor: pointer;
+}
+
+/* =========================================================
+   AVAILABILITY
+========================================================= */
+
+.add-food-availability {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ececf1;
+  border-radius: 14px;
+  background: #fafafd;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.add-food-availability:hover {
+  border-color: #e8c7d3;
+  background: #fffafd;
+}
+
+.add-food-availability > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+
+.add-food-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 28px;
+  padding: 3px;
+  border-radius: 30px;
+  background: #d4d4d8;
+  box-sizing: border-box;
+  transition: background 0.2s ease;
+}
+
+.add-food-toggle span {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.add-food-availability
+  > input:checked
+  + .add-food-toggle {
+  background: #e50046;
+}
+
+.add-food-availability
+  > input:checked
+  + .add-food-toggle
+  span {
+  transform: translateX(22px);
+}
+
+.add-food-availability
+  > input:focus-visible
+  + .add-food-toggle {
+  box-shadow:
+    0 0 0 3px rgba(229, 0, 70, 0.14);
+}
+
+/* =========================================================
+   AVAILABILITY TEXT
+========================================================= */
+
+.add-food-availability-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.add-food-availability-text strong {
+  color: #27272a;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.add-food-availability-text small {
+  color: #71717a;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.add-food-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 3px;
+}
+
+.add-food-reset-button,
+.add-food-cancel-button,
+.add-food-submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition:
+    transform 0.18s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.add-food-reset-button {
+  border: 1px solid #dedee5;
+  background: #ffffff;
+  color: #55555e;
+}
+
+.add-food-reset-button:hover {
+  background: #f4f4f6;
+  color: #27272a;
+}
+
+.add-food-cancel-button {
+  border: 1px solid #dedee5;
+  background: #ffffff;
+  color: #55555e;
+}
+
+.add-food-cancel-button:hover {
+  border-color: #cfcfd6;
+  background: #f7f7f9;
+  color: #27272a;
+}
+
+.add-food-submit-button {
+  min-width: 135px;
+  border: 1px solid #e50046;
+  background: #e50046;
+  color: #ffffff;
+  box-shadow:
+    0 8px 20px rgba(229, 0, 70, 0.18);
+}
+
+.add-food-submit-button:hover {
+  border-color: #c9003d;
+  background: #c9003d;
+  box-shadow:
+    0 11px 24px rgba(229, 0, 70, 0.24);
+}
+
+.add-food-reset-button:active,
+.add-food-cancel-button:active,
+.add-food-submit-button:active {
+  transform: scale(0.98);
+}
+
+.add-food-reset-button:disabled,
+.add-food-cancel-button:disabled,
+.add-food-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   SUBMIT SPINNER
+========================================================= */
+
+.add-food-button-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: addFoodSpin 0.7s linear infinite;
+}
+
+@keyframes addFoodSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   LARGE LAPTOP
+========================================================= */
+
+@media (max-width: 1100px) {
+  .add-food-page {
+    padding: 28px 20px 45px;
+  }
+
+  .add-food-container {
+    max-width: 100%;
+  }
+
+  .add-food-card {
+    padding: 22px;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+  .add-food-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .add-food-back-button {
+    width: 100%;
+  }
+
+  .add-food-form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .add-food-full-width {
+    grid-column: auto;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .add-food-page {
+    padding: 20px 14px 35px;
+  }
+
+  .add-food-header {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .add-food-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.3px;
+  }
+
+  .add-food-header h1 {
+    font-size: 30px;
+  }
+
+  .add-food-header p {
+    font-size: 12px;
+  }
+
+  .add-food-card {
+    padding: 17px;
+    border-radius: 15px;
+  }
+
+  .add-food-card-header {
+    gap: 10px;
+    margin-bottom: 19px;
+    padding-bottom: 15px;
+  }
+
+  .add-food-card-header-icon {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+
+  .add-food-card-header h2 {
+    font-size: 16px;
+  }
+
+  .add-food-card-header p {
+    font-size: 11px;
+  }
+
+  .add-food-field input,
+  .add-food-field select {
+    height: 44px;
+  }
+
+  .add-food-field textarea {
+    min-height: 115px;
+  }
+
+  .add-food-alert {
+    align-items: flex-start;
+    padding: 13px;
+  }
+
+  .add-food-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .add-food-reset-button,
+  .add-food-cancel-button,
+  .add-food-submit-button {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 10px;
+  }
+
+  .add-food-submit-button {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .add-food-reset-button {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .add-food-cancel-button {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+  .add-food-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .add-food-card {
+    padding: 14px;
+  }
+
+  .add-food-header h1 {
+    font-size: 27px;
+  }
+
+  .add-food-availability {
+    align-items: flex-start;
+  }
+
+  .add-food-toggle {
+    margin-top: 1px;
+  }
+
+  .add-food-availability-text small {
+    font-size: 10px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 320px) {
+  .add-food-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .add-food-submit-button,
+  .add-food-reset-button,
+  .add-food-cancel-button {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .add-food-alert-content span {
+    word-break: break-word;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .add-food-back-button,
+  .add-food-reset-button,
+  .add-food-cancel-button,
+  .add-food-submit-button,
+  .add-food-toggle span {
+    transition: none;
+  }
+
+  .add-food-button-spinner {
+    animation: none;
+  }
+}

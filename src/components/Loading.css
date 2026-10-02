@@ -1,0 +1,104 @@
+.anna-loading {
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #777;
+  box-sizing: border-box;
+}
+
+.anna-loading-spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #f1dbe2;
+  border-top-color: #8b1538;
+  border-right-color: #c72c55;
+  border-radius: 50%;
+  animation: annaLoadingSpin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+.anna-loading-message {
+  margin: 0;
+  color: #6f6469;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@keyframes annaLoadingSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .anna-loading {
+    min-height: 190px;
+    gap: 12px;
+  }
+
+  .anna-loading-spinner {
+    width: 38px;
+    height: 38px;
+    border-width: 3px;
+  }
+
+  .anna-loading-message {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+  .anna-loading {
+    min-height: 180px;
+    gap: 11px;
+  }
+
+  .anna-loading-spinner {
+    width: 36px;
+    height: 36px;
+    border-width: 3px;
+  }
+
+  .anna-loading-message {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .anna-loading {
+    min-height: 150px;
+    gap: 10px;
+  }
+
+  .anna-loading-spinner {
+    width: 32px;
+    height: 32px;
+  }
+
+  .anna-loading-message {
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-loading-spinner {
+    animation-duration: 1.8s;
+  }
+}

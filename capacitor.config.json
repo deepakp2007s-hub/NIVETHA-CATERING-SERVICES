@@ -1,0 +1,5 @@
+{
+  "appId": "com.nivetha.catering.anna",
+  "appName": "npx cap add androidnpm run buildnpx cap sync androidnpx cap open android",
+  "webDir": "dist"
+}

@@ -1,0 +1,288 @@
+.anna-stat-card {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+
+  padding: 20px;
+
+  background: #ffffff;
+  border: 1px solid #eee5e9;
+  border-radius: 18px;
+
+  box-shadow: 0 8px 28px rgba(55, 20, 32, 0.055);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.anna-stat-card::after {
+  content: "";
+  position: absolute;
+
+  width: 85px;
+  height: 85px;
+
+  right: -35px;
+  bottom: -40px;
+
+  border-radius: 50%;
+
+  background: rgba(139, 21, 56, 0.045);
+  pointer-events: none;
+}
+
+.anna-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(55, 20, 32, 0.09);
+}
+
+.anna-stat-card-clickable {
+  cursor: pointer;
+}
+
+.anna-stat-card-clickable:focus-visible {
+  outline: 3px solid rgba(139, 21, 56, 0.18);
+  outline-offset: 2px;
+}
+
+/* TOP */
+
+.anna-stat-card-top {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.anna-stat-icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #fff3f6;
+  color: #8b1538;
+
+  font-size: 20px;
+
+  box-shadow: inset 0 0 0 1px rgba(139, 21, 56, 0.05);
+}
+
+.anna-stat-trend {
+  padding: 5px 8px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.anna-stat-trend.up {
+  background: #eaf8ef;
+  color: #24733c;
+}
+
+.anna-stat-trend.down {
+  background: #fff0f0;
+  color: #b52b2b;
+}
+
+/* CONTENT */
+
+.anna-stat-content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 17px;
+}
+
+.anna-stat-title {
+  color: #8b7b82;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.anna-stat-value {
+  margin-top: 5px;
+
+  color: #321a23;
+
+  font-size: 28px;
+  font-weight: 850;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.anna-stat-subtitle {
+  margin-top: 6px;
+
+  color: #a28f97;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* PRIMARY */
+
+.anna-stat-card-primary .anna-stat-icon {
+  background: #fff0f4;
+  color: #8b1538;
+}
+
+/* SUCCESS */
+
+.anna-stat-card-success .anna-stat-icon {
+  background: #edf9f1;
+  color: #258046;
+}
+
+.anna-stat-card-success::after {
+  background: rgba(37, 128, 70, 0.05);
+}
+
+/* WARNING */
+
+.anna-stat-card-warning .anna-stat-icon {
+  background: #fff8e7;
+  color: #a56c08;
+}
+
+.anna-stat-card-warning::after {
+  background: rgba(165, 108, 8, 0.05);
+}
+
+/* DANGER */
+
+.anna-stat-card-danger .anna-stat-icon {
+  background: #fff0f0;
+  color: #b52b2b;
+}
+
+.anna-stat-card-danger::after {
+  background: rgba(181, 43, 43, 0.05);
+}
+
+/* INFO */
+
+.anna-stat-card-info .anna-stat-icon {
+  background: #eef7ff;
+  color: #2670a9;
+}
+
+.anna-stat-card-info::after {
+  background: rgba(38, 112, 169, 0.05);
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+  .anna-stat-card {
+    padding: 18px;
+  }
+
+  .anna-stat-icon {
+    width: 43px;
+    height: 43px;
+    font-size: 18px;
+  }
+
+  .anna-stat-value {
+    font-size: 25px;
+  }
+}
+
+/* TABLET / LARGE PHONE */
+
+@media (max-width: 768px) {
+  .anna-stat-card {
+    padding: 16px;
+    border-radius: 15px;
+  }
+
+  .anna-stat-content {
+    margin-top: 14px;
+  }
+
+  .anna-stat-title {
+    font-size: 10px;
+  }
+
+  .anna-stat-value {
+    font-size: 23px;
+  }
+
+  .anna-stat-subtitle {
+    font-size: 9px;
+  }
+}
+
+/* PHONE */
+
+@media (max-width: 600px) {
+  .anna-stat-card {
+    padding: 15px;
+  }
+
+  .anna-stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    font-size: 17px;
+  }
+
+  .anna-stat-value {
+    font-size: 22px;
+  }
+
+  .anna-stat-trend {
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+}
+
+/* SMALL PHONE */
+
+@media (max-width: 375px) {
+  .anna-stat-card {
+    padding: 13px;
+    border-radius: 13px;
+  }
+
+  .anna-stat-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .anna-stat-content {
+    margin-top: 12px;
+  }
+
+  .anna-stat-value {
+    font-size: 20px;
+  }
+
+  .anna-stat-title {
+    font-size: 9px;
+  }
+
+  .anna-stat-subtitle {
+    font-size: 8px;
+  }
+}

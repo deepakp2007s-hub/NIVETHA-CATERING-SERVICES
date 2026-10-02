@@ -1,0 +1,550 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   SIDEBAR
+========================================================= */
+
+.anna-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 1100;
+
+  width: 258px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+  border-right: 1px solid #eee7ea;
+
+  box-shadow: 8px 0 30px rgba(45, 27, 34, 0.05);
+
+  overflow: hidden;
+
+  transform: translateX(0);
+
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.anna-sidebar-brand {
+  flex-shrink: 0;
+
+  height: 82px;
+  padding: 16px 18px;
+
+  border-bottom: 1px solid #f0eaed;
+}
+
+.anna-sidebar-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  height: 100%;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.anna-sidebar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  border-radius: 13px;
+
+  background: linear-gradient(
+    145deg,
+    #9b2147,
+    #7d1233
+  );
+
+  color: #ffffff;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 16px rgba(139, 21, 56, 0.2);
+}
+
+.anna-sidebar-brand-text {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.anna-sidebar-brand-text strong {
+  color: #291a20;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.anna-sidebar-brand-text span {
+  margin-top: 3px;
+
+  color: #8b8186;
+
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SCROLL AREA
+========================================================= */
+
+.anna-sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+
+  padding: 22px 12px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #d9cfd3 transparent;
+}
+
+.anna-sidebar-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.anna-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.anna-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #d9cfd3;
+  border-radius: 20px;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.anna-sidebar-section {
+  width: 100%;
+}
+
+.anna-sidebar-account {
+  margin-top: 26px;
+  padding-top: 20px;
+
+  border-top: 1px solid #f0eaed;
+}
+
+.anna-sidebar-section-title {
+  display: block;
+
+  margin: 0 10px 10px;
+
+  color: #a39a9f;
+
+  font-size: 0.64rem;
+  font-weight: 800;
+
+  letter-spacing: 0.09em;
+}
+
+/* =========================================================
+   NAV
+========================================================= */
+
+.anna-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.anna-sidebar-link {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 46px;
+  width: 100%;
+
+  padding: 8px 11px;
+
+  border-radius: 10px;
+
+  color: #6f676d;
+
+  font-size: 0.86rem;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.anna-sidebar-link:hover {
+  background: #fff4f7;
+  color: #8b1538;
+
+  transform: translateX(2px);
+}
+
+.anna-sidebar-link.active {
+  background: #fff0f4;
+  color: #8b1538;
+
+  font-weight: 800;
+}
+
+.anna-sidebar-link.active::before {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  top: 50%;
+
+  width: 3px;
+  height: 24px;
+
+  border-radius: 0 5px 5px 0;
+
+  background: #8b1538;
+
+  transform: translateY(-50%);
+}
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.anna-sidebar-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 31px;
+  height: 31px;
+
+  flex-shrink: 0;
+
+  border-radius: 8px;
+
+  background: #faf7f8;
+
+  color: #756c71;
+
+  font-size: 0.95rem;
+  line-height: 1;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.anna-sidebar-link:hover .anna-sidebar-link-icon,
+.anna-sidebar-link.active .anna-sidebar-link-icon {
+  background: rgba(139, 21, 56, 0.09);
+  color: #8b1538;
+}
+
+.anna-sidebar-link-label {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   OWNER
+========================================================= */
+
+.anna-sidebar-owner {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 75px;
+  padding: 12px 15px;
+
+  flex-shrink: 0;
+
+  border-top: 1px solid #f0eaed;
+
+  background: #fffafb;
+}
+
+.anna-sidebar-owner-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #8b1538;
+  color: #ffffff;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+
+  box-shadow:
+    0 4px 10px rgba(139, 21, 56, 0.17);
+}
+
+.anna-sidebar-owner-info {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.anna-sidebar-owner-info strong {
+  color: #2d1b22;
+
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.anna-sidebar-owner-info span {
+  margin-top: 3px;
+
+  color: #8a8186;
+
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* =========================================================
+   MOBILE OVERLAY
+========================================================= */
+
+.anna-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  border: 0;
+
+  background: rgba(29, 15, 20, 0.48);
+
+  backdrop-filter: blur(2px);
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 1025px) {
+  .anna-sidebar-overlay {
+    display: none;
+  }
+}
+
+/* =========================================================
+   TABLET / LAPTOP
+========================================================= */
+
+@media (max-width: 1024px) {
+  .anna-sidebar {
+    width: 260px;
+
+    transform: translateX(-100%);
+
+    box-shadow:
+      10px 0 35px rgba(0, 0, 0, 0.13);
+  }
+
+  .anna-sidebar.anna-sidebar-open {
+    transform: translateX(0);
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .anna-sidebar {
+    width: min(285px, 82vw);
+  }
+
+  .anna-sidebar-brand {
+    height: 76px;
+    padding: 14px 16px;
+  }
+
+  .anna-sidebar-scroll {
+    padding: 18px 10px;
+  }
+
+  .anna-sidebar-link {
+    min-height: 48px;
+  }
+
+  .anna-sidebar-owner {
+    min-height: 72px;
+    padding: 11px 13px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  .anna-sidebar {
+    width: min(285px, 86vw);
+  }
+
+  .anna-sidebar-brand {
+    height: 72px;
+    padding: 12px 14px;
+  }
+
+  .anna-sidebar-logo {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    font-size: 1.25rem;
+  }
+
+  .anna-sidebar-brand-text strong {
+    font-size: 0.98rem;
+  }
+
+  .anna-sidebar-brand-text span {
+    font-size: 0.63rem;
+  }
+
+  .anna-sidebar-scroll {
+    padding: 16px 9px;
+  }
+
+  .anna-sidebar-section-title {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    font-size: 0.62rem;
+  }
+
+  .anna-sidebar-link {
+    min-height: 47px;
+
+    gap: 10px;
+    padding: 9px 10px;
+
+    font-size: 0.83rem;
+  }
+
+  .anna-sidebar-link-icon {
+    width: 29px;
+    height: 29px;
+
+    font-size: 0.9rem;
+  }
+
+  .anna-sidebar-owner {
+    min-height: 69px;
+    padding: 10px 12px;
+  }
+
+  .anna-sidebar-owner-avatar {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+  .anna-sidebar {
+    width: 88vw;
+  }
+
+  .anna-sidebar-brand {
+    padding: 10px 12px;
+  }
+
+  .anna-sidebar-scroll {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .anna-sidebar-link {
+    min-height: 45px;
+    padding: 8px 9px;
+  }
+
+  .anna-sidebar-owner {
+    padding: 9px 10px;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .anna-sidebar-link:hover {
+    background: transparent;
+    color: #6f676d;
+    transform: none;
+  }
+
+  .anna-sidebar-link.active:hover {
+    background: #fff0f4;
+    color: #8b1538;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-sidebar,
+  .anna-sidebar-link,
+  .anna-sidebar-link-icon {
+    transition: none;
+  }
+}

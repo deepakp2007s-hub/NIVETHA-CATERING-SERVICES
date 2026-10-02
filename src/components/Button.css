@@ -1,0 +1,419 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   BUTTON SYSTEM
+========================================================= */
+
+.anna-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 42px;
+
+  padding: 10px 18px;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.anna-button:focus-visible {
+  outline: 3px solid rgba(139, 21, 56, 0.18);
+  outline-offset: 2px;
+}
+
+.anna-button:active {
+  transform: translateY(1px);
+}
+
+.anna-button:disabled,
+.anna-button.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* =========================================================
+   PRIMARY
+========================================================= */
+
+.anna-button-primary {
+  background: #8b1538;
+  border-color: #8b1538;
+  color: #ffffff;
+
+  box-shadow: 0 5px 14px rgba(139, 21, 56, 0.16);
+}
+
+.anna-button-primary:hover {
+  background: #65102a;
+  border-color: #65102a;
+  color: #ffffff;
+
+  box-shadow: 0 7px 18px rgba(139, 21, 56, 0.22);
+}
+
+/* =========================================================
+   SECONDARY
+========================================================= */
+
+.anna-button-secondary {
+  background: #ffffff;
+  border-color: #dcd2d7;
+  color: #4b4147;
+}
+
+.anna-button-secondary:hover {
+  background: #fff1f5;
+  border-color: #8b1538;
+  color: #8b1538;
+}
+
+/* =========================================================
+   OUTLINE
+========================================================= */
+
+.anna-button-outline {
+  background: transparent;
+  border-color: #8b1538;
+  color: #8b1538;
+}
+
+.anna-button-outline:hover {
+  background: #fff1f5;
+  border-color: #65102a;
+  color: #65102a;
+}
+
+/* =========================================================
+   GHOST
+========================================================= */
+
+.anna-button-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: #665c62;
+}
+
+.anna-button-ghost:hover {
+  background: #fff1f5;
+  color: #8b1538;
+}
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.anna-button-success {
+  background: #23804d;
+  border-color: #23804d;
+  color: #ffffff;
+
+  box-shadow: 0 5px 14px rgba(35, 128, 77, 0.14);
+}
+
+.anna-button-success:hover {
+  background: #17663b;
+  border-color: #17663b;
+}
+
+/* =========================================================
+   DANGER
+========================================================= */
+
+.anna-button-danger {
+  background: #c62828;
+  border-color: #c62828;
+  color: #ffffff;
+
+  box-shadow: 0 5px 14px rgba(198, 40, 40, 0.12);
+}
+
+.anna-button-danger:hover {
+  background: #a61f1f;
+  border-color: #a61f1f;
+}
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.anna-button-warning {
+  background: #b77900;
+  border-color: #b77900;
+  color: #ffffff;
+}
+
+.anna-button-warning:hover {
+  background: #956200;
+  border-color: #956200;
+}
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.anna-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.anna-button-icon-only {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border-radius: 10px;
+}
+
+/* =========================================================
+   SIZES
+========================================================= */
+
+.anna-button-small {
+  min-height: 34px;
+
+  padding: 7px 12px;
+
+  border-radius: 8px;
+
+  font-size: 0.7rem;
+}
+
+.anna-button-medium {
+  min-height: 42px;
+
+  padding: 10px 18px;
+
+  font-size: 0.82rem;
+}
+
+.anna-button-large {
+  min-height: 48px;
+
+  padding: 12px 22px;
+
+  border-radius: 11px;
+
+  font-size: 0.9rem;
+}
+
+/* =========================================================
+   FULL WIDTH
+========================================================= */
+
+.anna-button-full {
+  width: 100%;
+}
+
+/* =========================================================
+   BUTTON GROUP
+========================================================= */
+
+.anna-button-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.anna-button-group.stretch {
+  width: 100%;
+}
+
+.anna-button-group.stretch .anna-button {
+  flex: 1;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.anna-button-loading {
+  position: relative;
+
+  pointer-events: none;
+}
+
+.anna-button-spinner {
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+
+  border-radius: 50%;
+
+  animation: anna-button-spin 0.7s linear infinite;
+}
+
+@keyframes anna-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .anna-button {
+    min-height: 40px;
+
+    padding: 9px 15px;
+
+    font-size: 0.78rem;
+  }
+
+  .anna-button-large {
+    min-height: 45px;
+    padding: 11px 19px;
+  }
+
+  .anna-button-icon-only {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  .anna-button {
+    min-height: 40px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    font-size: 0.72rem;
+  }
+
+  .anna-button-small {
+    min-height: 34px;
+
+    padding: 7px 10px;
+
+    font-size: 0.66rem;
+  }
+
+  .anna-button-large {
+    min-height: 44px;
+
+    padding: 10px 16px;
+
+    font-size: 0.78rem;
+  }
+
+  .anna-button-icon-only {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .anna-button-group {
+    gap: 6px;
+  }
+
+  .anna-button-group.stretch {
+    flex-direction: column;
+  }
+
+  .anna-button-group.stretch .anna-button {
+    width: 100%;
+    flex: none;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+  .anna-button {
+    padding: 8px 10px;
+
+    font-size: 0.68rem;
+  }
+
+  .anna-button-icon-only {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .anna-button-primary:hover,
+  .anna-button-secondary:hover,
+  .anna-button-outline:hover,
+  .anna-button-ghost:hover,
+  .anna-button-success:hover,
+  .anna-button-danger:hover,
+  .anna-button-warning:hover {
+    box-shadow: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-button {
+    transition: none;
+  }
+
+  .anna-button-spinner {
+    animation: none;
+  }
+}

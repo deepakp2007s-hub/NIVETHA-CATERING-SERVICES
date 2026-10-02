@@ -1,0 +1,551 @@
+/* =====================================================
+   NIVETHA CATERING SERVICE
+   ANNA OWNER APP - SPLASH PAGE
+===================================================== */
+
+.splash-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  position: relative;
+  background: #65102a;
+}
+
+.splash-background {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 32px 20px;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 255, 255, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 255, 255, 0.06),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #4b0c20 0%,
+      #65102a 45%,
+      #8b1538 100%
+    );
+}
+
+/* =====================================================
+   DECORATIVE CIRCLES
+===================================================== */
+
+.splash-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.035);
+  animation: splashFloat 7s ease-in-out infinite;
+}
+
+.splash-circle-one {
+  width: 420px;
+  height: 420px;
+  top: -210px;
+  left: -150px;
+}
+
+.splash-circle-two {
+  width: 520px;
+  height: 520px;
+  right: -250px;
+  bottom: -260px;
+  animation-delay: -2s;
+}
+
+.splash-circle-three {
+  width: 180px;
+  height: 180px;
+  right: 12%;
+  top: 10%;
+  background: rgba(255, 255, 255, 0.025);
+  animation-delay: -4s;
+}
+
+/* =====================================================
+   SPLASH CARD
+===================================================== */
+
+.splash-card {
+  width: min(100%, 540px);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 48px 42px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: splashCardIn 0.8s ease-out both;
+}
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.splash-logo {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 22px;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 0 0 8px rgba(255, 255, 255, 0.08);
+  animation: splashLogoIn 0.9s ease-out 0.15s both;
+}
+
+.splash-logo-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    #8b1538,
+    #65102a
+  );
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* =====================================================
+   TEXT
+===================================================== */
+
+.splash-welcome {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.splash-title {
+  margin: 0;
+  color: #ffffff;
+  font-family:
+    "Noto Sans Tamil",
+    "Latha",
+    sans-serif;
+  font-size: clamp(36px, 7vw, 52px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.2);
+}
+
+.splash-subtitle {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(16px, 3vw, 21px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+}
+
+.splash-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.splash-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: min(100%, 280px);
+  margin: 26px auto 18px;
+}
+
+.splash-divider span {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5)
+  );
+}
+
+.splash-divider span:last-child {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+}
+
+.splash-divider i {
+  color: #ffffff;
+  font-size: 15px;
+  font-style: normal;
+}
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+.splash-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 30px;
+}
+
+.splash-loader span {
+  width: 8px;
+  height: 8px;
+  display: block;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: splashDots 1.2s ease-in-out infinite;
+}
+
+.splash-loader span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.splash-loader span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.splash-loading {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.splash-footer {
+  position: absolute;
+  z-index: 2;
+  left: 20px;
+  right: 20px;
+  bottom: 22px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.splash-footer span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes splashCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes splashLogoIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-8deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes splashDots {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes splashFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, 18px, 0);
+  }
+}
+
+/* =====================================================
+   LARGE DESKTOP
+===================================================== */
+
+@media (min-width: 1440px) {
+  .splash-card {
+    width: 560px;
+    padding: 56px 50px;
+  }
+
+  .splash-logo {
+    width: 104px;
+    height: 104px;
+  }
+
+  .splash-logo-icon {
+    font-size: 54px;
+  }
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+  .splash-background {
+    padding: 24px 16px;
+  }
+
+  .splash-card {
+    max-width: 500px;
+    padding: 42px 30px;
+    border-radius: 24px;
+  }
+
+  .splash-circle-one {
+    width: 320px;
+    height: 320px;
+    top: -160px;
+    left: -130px;
+  }
+
+  .splash-circle-two {
+    width: 380px;
+    height: 380px;
+    right: -190px;
+    bottom: -190px;
+  }
+
+  .splash-circle-three {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+  .splash-background {
+    padding: 18px 14px;
+  }
+
+  .splash-card {
+    width: 100%;
+    padding: 36px 20px;
+    border-radius: 22px;
+  }
+
+  .splash-logo {
+    width: 78px;
+    height: 78px;
+    margin-bottom: 18px;
+  }
+
+  .splash-logo-icon {
+    font-size: 40px;
+  }
+
+  .splash-welcome {
+    font-size: 13px;
+  }
+
+  .splash-title {
+    font-size: 34px;
+  }
+
+  .splash-subtitle {
+    margin-top: 8px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+
+  .splash-divider {
+    margin-top: 22px;
+  }
+
+  .splash-description {
+    font-size: 12px;
+  }
+
+  .splash-loader {
+    margin-top: 25px;
+  }
+
+  .splash-footer {
+    bottom: 15px;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 360px) {
+  .splash-card {
+    padding: 30px 16px;
+  }
+
+  .splash-logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .splash-logo-icon {
+    font-size: 36px;
+  }
+
+  .splash-title {
+    font-size: 30px;
+  }
+
+  .splash-subtitle {
+    font-size: 12px;
+  }
+
+  .splash-description {
+    font-size: 11px;
+  }
+
+  .splash-loading {
+    font-size: 11px;
+  }
+}
+
+/* =====================================================
+   LANDSCAPE MOBILE
+===================================================== */
+
+@media (
+  max-height: 600px
+) and (orientation: landscape) {
+  .splash-background {
+    padding: 16px;
+  }
+
+  .splash-card {
+    max-width: 620px;
+    padding: 22px 32px;
+  }
+
+  .splash-logo {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 10px;
+  }
+
+  .splash-logo-icon {
+    font-size: 30px;
+  }
+
+  .splash-welcome {
+    font-size: 11px;
+  }
+
+  .splash-title {
+    font-size: 28px;
+  }
+
+  .splash-subtitle {
+    margin-top: 4px;
+    font-size: 12px;
+  }
+
+  .splash-divider {
+    margin: 12px auto 8px;
+  }
+
+  .splash-description {
+    font-size: 11px;
+  }
+
+  .splash-loader {
+    margin-top: 12px;
+  }
+
+  .splash-loading {
+    margin-top: 5px;
+  }
+
+  .splash-footer {
+    display: none;
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-card,
+  .splash-logo,
+  .splash-circle,
+  .splash-loader span {
+    animation: none;
+  }
+}

@@ -1,0 +1,530 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   HEADER
+========================================================= */
+
+.anna-header {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+
+  width: 100%;
+
+  background: #ffffff;
+  border-bottom: 1px solid #eee7ea;
+
+  box-shadow: 0 2px 12px rgba(45, 27, 34, 0.04);
+}
+
+/* =========================================================
+   HEADER MAIN
+========================================================= */
+
+.anna-header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 78px;
+
+  padding: 15px 28px;
+
+  gap: 18px;
+
+  flex-wrap: nowrap;
+}
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.anna-menu-button {
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border: 1px solid #eadfe3;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #8b1538;
+
+  font-size: 1.3rem;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.anna-menu-button:hover {
+  background: #fff1f5;
+  border-color: #c98aa0;
+}
+
+.anna-menu-button:active {
+  transform: scale(0.95);
+}
+
+.anna-menu-button:focus-visible {
+  outline: 3px solid rgba(139, 21, 56, 0.15);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.anna-header-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.anna-header-title h1 {
+  margin: 0;
+
+  color: #2d1b22;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: 800;
+
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.anna-header-title p {
+  margin: 5px 0 0;
+
+  color: #8a8186;
+
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 0.82rem;
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.anna-header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-shrink: 0;
+
+  gap: 12px;
+}
+
+/* =========================================================
+   DATE BOX
+========================================================= */
+
+.anna-header-date {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  min-width: 185px;
+
+  padding: 8px 12px;
+
+  gap: 10px;
+
+  border: 1px solid #eee4e8;
+  border-radius: 11px;
+
+  background: #fffafb;
+
+  box-sizing: border-box;
+}
+
+.anna-header-date-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 9px;
+
+  background: #fff1f5;
+
+  font-size: 1rem;
+}
+
+.anna-header-date > div {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.anna-header-date small {
+  display: block;
+
+  margin: 0;
+
+  color: #a0979c;
+
+  font-family:
+    "Inter",
+    system-ui,
+    sans-serif;
+
+  font-size: 0.64rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.anna-header-date strong {
+  display: block;
+
+  margin: 3px 0 0;
+
+  color: #3a3035;
+
+  font-family:
+    "Inter",
+    system-ui,
+    sans-serif;
+
+  font-size: 0.76rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 1025px) {
+  .anna-header-main {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+}
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+  .anna-header-main {
+    min-height: 72px;
+
+    padding: 14px 20px;
+
+    gap: 16px;
+  }
+
+  .anna-header-date {
+    min-width: 170px;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1024px) {
+  .anna-header-main {
+    min-height: 68px;
+
+    padding: 12px 16px;
+
+    gap: 12px;
+  }
+
+  .anna-menu-button {
+    display: flex;
+  }
+
+  .anna-header-title h1 {
+    font-size: 1.35rem;
+  }
+
+  .anna-header-title p {
+    font-size: 0.76rem;
+  }
+
+  .anna-header-right {
+    gap: 8px;
+  }
+
+  .anna-header-date {
+    min-width: auto;
+
+    padding: 6px 8px;
+  }
+
+  .anna-header-date-icon {
+    width: 31px;
+    height: 31px;
+  }
+}
+
+/* =========================================================
+   TABLET / MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+  .anna-header-main {
+    min-height: 62px;
+
+    padding: 8px 10px;
+
+    gap: 8px;
+
+    flex-wrap: nowrap;
+  }
+
+  .anna-menu-button {
+    display: flex;
+
+    width: 38px;
+    height: 38px;
+
+    font-size: 1.15rem;
+  }
+
+  .anna-header-title {
+    flex: 1 1 auto;
+
+    min-width: 0;
+  }
+
+  .anna-header-title h1 {
+    font-size: 1rem;
+
+    line-height: 1.15;
+  }
+
+  .anna-header-title p {
+    display: none;
+  }
+
+  .anna-header-right {
+    display: flex;
+    align-items: center;
+
+    flex: 0 0 auto;
+
+    gap: 4px;
+  }
+
+  .anna-header-date {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    padding: 3px 4px;
+
+    gap: 5px;
+
+    border: 0;
+    background: transparent;
+  }
+
+  .anna-header-date-icon {
+    width: 28px;
+    height: 28px;
+
+    border-radius: 8px;
+
+    font-size: 0.78rem;
+  }
+
+  .anna-header-date > div {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+  }
+
+  .anna-header-date small {
+    font-size: 0.5rem;
+
+    line-height: 1;
+  }
+
+  .anna-header-date strong {
+    margin-top: 3px;
+
+    font-size: 0.6rem;
+
+    line-height: 1.1;
+
+    white-space: nowrap;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  .anna-header-main {
+    min-height: 58px;
+
+    padding: 7px 8px;
+
+    gap: 6px;
+  }
+
+  .anna-menu-button {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 9px;
+
+    font-size: 1.05rem;
+  }
+
+  .anna-header-title h1 {
+    font-size: 0.95rem;
+  }
+
+  .anna-header-right {
+    gap: 2px;
+  }
+
+  .anna-header-date {
+    padding: 2px 3px;
+
+    gap: 4px;
+  }
+
+  .anna-header-date-icon {
+    width: 27px;
+    height: 27px;
+
+    font-size: 0.72rem;
+  }
+
+  .anna-header-date small {
+    font-size: 0.46rem;
+  }
+
+  .anna-header-date strong {
+    font-size: 0.55rem;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+  .anna-header-main {
+    padding: 7px;
+    gap: 5px;
+  }
+
+  .anna-menu-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .anna-header-title h1 {
+    font-size: 0.9rem;
+  }
+
+  .anna-header-date-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .anna-header-date small {
+    font-size: 0.42rem;
+  }
+
+  .anna-header-date strong {
+    font-size: 0.5rem;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .anna-header-main {
+    min-height: 56px;
+
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .anna-header-title p {
+    display: none;
+  }
+}
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .anna-menu-button:hover {
+    background: #ffffff;
+    border-color: #eadfe3;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-menu-button {
+    transition: none;
+  }
+}

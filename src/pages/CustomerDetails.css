@@ -1,0 +1,602 @@
+.customer-details-page {
+  width: 100%;
+  min-height: 100%;
+}
+
+.customer-details-container {
+  width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
+}
+
+.customer-details-topbar {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.customer-details-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8b1538;
+  text-decoration: none;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.customer-details-back:hover {
+  color: #ff004c;
+}
+
+.customer-details-back span {
+  font-size: 1rem;
+}
+
+.customer-details-id {
+  color: #9b858d;
+  font-size: 0.63rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.customer-details-alert {
+  margin-bottom: 15px;
+  padding: 12px 15px;
+  border: 1px solid #f1ccd6;
+  border-radius: 10px;
+  color: #9c2143;
+  background: #fff3f6;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* PROFILE BANNER */
+
+.customer-profile-banner {
+  margin-bottom: 17px;
+  padding: 24px;
+  border: 1px solid #eee4e7;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  background:
+    radial-gradient(
+      circle at 95% 15%,
+      rgba(255, 0, 76, 0.08),
+      transparent 30%
+    ),
+    #ffffff;
+  box-shadow: 0 8px 25px rgba(72, 23, 39, 0.045);
+}
+
+.customer-large-avatar {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  border-radius: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b1538;
+  background: #fff0f4;
+  font-size: 1.55rem;
+  font-weight: 800;
+}
+
+.customer-profile-main {
+  min-width: 0;
+}
+
+.customer-profile-main > span {
+  display: block;
+  margin-bottom: 4px;
+  color: #ff004c;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.customer-profile-main h1 {
+  margin: 0;
+  color: #30141e;
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 800;
+}
+
+.customer-contact-row {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 15px;
+}
+
+.customer-contact-row a {
+  color: #78636b;
+  text-decoration: none;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.customer-contact-row a:hover {
+  color: #ff004c;
+}
+
+/* GRID */
+
+.customer-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.customer-info-card,
+.customer-stat-card,
+.customer-bookings-card {
+  padding: 21px;
+  border: 1px solid #eee4e7;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 7px 23px rgba(72, 23, 39, 0.045);
+}
+
+.customer-bookings-card {
+  grid-column: 1 / -1;
+}
+
+.customer-card-heading {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.customer-card-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff0f4;
+  font-size: 1rem;
+}
+
+.customer-card-heading span {
+  display: block;
+  margin-bottom: 2px;
+  color: #ff004c;
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.customer-card-heading h2 {
+  margin: 0;
+  color: #351721;
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* CUSTOMER INFO */
+
+.customer-info-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px 20px;
+}
+
+.customer-info-list > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.customer-info-list small {
+  color: #9b858d;
+  font-size: 0.59rem;
+  font-weight: 700;
+}
+
+.customer-info-list strong {
+  overflow: hidden;
+  color: #4b3039;
+  font-size: 0.71rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* STATS */
+
+.customer-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+.customer-stat-grid > div {
+  min-height: 78px;
+  padding: 12px;
+  border: 1px solid #eee4e7;
+  border-radius: 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fffafd;
+}
+
+.customer-stat-grid strong {
+  color: #8b1538;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.customer-stat-grid small {
+  margin-top: 3px;
+  color: #96828a;
+  font-size: 0.58rem;
+  font-weight: 700;
+}
+
+/* BOOKINGS */
+
+.customer-bookings-list {
+  width: 100%;
+}
+
+.customer-booking-row {
+  min-height: 67px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0e8eb;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 95px 75px;
+  align-items: center;
+  gap: 15px;
+}
+
+.customer-booking-row:last-child {
+  border-bottom: 0;
+}
+
+.customer-booking-date {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.customer-booking-date strong {
+  color: #493039;
+  font-size: 0.69rem;
+  font-weight: 800;
+}
+
+.customer-booking-date small {
+  color: #9a858d;
+  font-size: 0.59rem;
+}
+
+.customer-booking-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.customer-booking-info strong {
+  overflow: hidden;
+  color: #4b3039;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customer-booking-info small {
+  color: #9a858d;
+  font-size: 0.59rem;
+}
+
+.customer-booking-status {
+  min-width: 72px;
+  padding: 5px 7px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.customer-booking-status i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-pending {
+  color: #966500;
+  background: #fff6d9;
+}
+
+.status-confirmed {
+  color: #157045;
+  background: #eafaf2;
+}
+
+.status-completed {
+  color: #365da5;
+  background: #eef4ff;
+}
+
+.status-rejected,
+.status-cancelled {
+  color: #a41f43;
+  background: #fff0f4;
+}
+
+.customer-booking-view {
+  min-height: 31px;
+  border: 1px solid #f0dce3;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #8b1538;
+  text-decoration: none;
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+.customer-booking-view:hover {
+  border-color: #ff004c;
+  color: #ff004c;
+  background: #fff0f4;
+}
+
+/* EMPTY */
+
+.customer-bookings-empty {
+  min-height: 150px;
+  border: 1px dashed #e3d7dc;
+  border-radius: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #fffafd;
+}
+
+.customer-bookings-empty span {
+  font-size: 1.4rem;
+}
+
+.customer-bookings-empty p {
+  margin: 0;
+  color: #99868e;
+  font-size: 0.67rem;
+}
+
+/* LOADING */
+
+.customer-details-loading {
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.customer-details-spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid #f0dce3;
+  border-top-color: #ff004c;
+  border-radius: 50%;
+  animation: customerDetailsSpin 0.8s linear infinite;
+}
+
+.customer-details-loading p {
+  margin: 0;
+  color: #806d75;
+  font-size: 0.74rem;
+}
+
+/* ERROR */
+
+.customer-details-error {
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.customer-details-error-icon {
+  width: 63px;
+  height: 63px;
+  margin-bottom: 14px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a41f43;
+  background: #fff0f4;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.customer-details-error h2 {
+  margin: 0 0 7px;
+  color: #43232d;
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+  font-size: 1.25rem;
+}
+
+.customer-details-error p {
+  max-width: 480px;
+  margin: 0 0 17px;
+  color: #806d75;
+  font-size: 0.7rem;
+}
+
+.customer-details-error > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.customer-details-error button {
+  min-height: 37px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #ff004c;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.customer-details-error button.secondary {
+  border: 1px solid #eadde2;
+  color: #7d5967;
+  background: #ffffff;
+}
+
+@media (max-width: 850px) {
+  .customer-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-bookings-card {
+    grid-column: auto;
+  }
+
+  .customer-booking-row {
+    grid-template-columns: 120px minmax(0, 1fr) 85px 65px;
+    gap: 9px;
+  }
+}
+
+@media (max-width: 650px) {
+  .customer-details-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .customer-profile-banner {
+    padding: 18px;
+  }
+
+  .customer-large-avatar {
+    width: 60px;
+    height: 60px;
+    flex-basis: 60px;
+    border-radius: 18px;
+  }
+
+  .customer-booking-row {
+    grid-template-columns: 1fr auto;
+    gap: 9px;
+  }
+
+  .customer-booking-status {
+    justify-self: end;
+  }
+
+  .customer-booking-view {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 500px) {
+  .customer-profile-banner {
+    align-items: flex-start;
+  }
+
+  .customer-profile-main h1 {
+    font-size: 1.6rem;
+  }
+
+  .customer-contact-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .customer-info-card,
+  .customer-stat-card,
+  .customer-bookings-card {
+    padding: 16px;
+    border-radius: 13px;
+  }
+
+  .customer-info-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .customer-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 375px) {
+  .customer-profile-banner {
+    flex-direction: column;
+  }
+
+  .customer-large-avatar {
+    width: 55px;
+    height: 55px;
+    flex-basis: 55px;
+  }
+
+  .customer-booking-row {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-booking-status {
+    justify-self: start;
+  }
+
+  .customer-booking-view {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .customer-details-spinner {
+    animation: none;
+  }
+}
+
+@keyframes customerDetailsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

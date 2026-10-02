@@ -1,0 +1,257 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   ANNA / OWNER APP
+   LOADER
+========================================================= */
+
+.anna-loader {
+  width: 100%;
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  color: #8b1538;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   FULL SCREEN
+========================================================= */
+
+.anna-loader-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* =========================================================
+   SPINNER
+========================================================= */
+
+.anna-loader-spinner {
+  position: relative;
+
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.anna-loader-spinner::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border: 4px solid #f1dbe2;
+  border-top-color: #8b1538;
+  border-right-color: #c72c55;
+
+  border-radius: 50%;
+
+  animation: annaLoaderRotate 0.85s linear infinite;
+}
+
+.anna-loader-spinner span {
+  position: absolute;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #8b1538;
+}
+
+.anna-loader-spinner span:nth-child(1) {
+  top: 7px;
+  left: 21px;
+}
+
+.anna-loader-spinner span:nth-child(2) {
+  right: 8px;
+  bottom: 13px;
+}
+
+.anna-loader-spinner span:nth-child(3) {
+  left: 8px;
+  bottom: 13px;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.anna-loader-message {
+  margin: 0;
+
+  color: #796970;
+
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  line-height: 1.4;
+
+  text-align: center;
+}
+
+/* =========================================================
+   SMALL
+========================================================= */
+
+.anna-loader-small .anna-loader-spinner {
+  width: 32px;
+  height: 32px;
+}
+
+.anna-loader-small .anna-loader-spinner::before {
+  border-width: 3px;
+}
+
+.anna-loader-small .anna-loader-spinner span {
+  width: 4px;
+  height: 4px;
+}
+
+.anna-loader-small .anna-loader-message {
+  font-size: 0.68rem;
+}
+
+/* =========================================================
+   LARGE
+========================================================= */
+
+.anna-loader-large .anna-loader-spinner {
+  width: 62px;
+  height: 62px;
+}
+
+.anna-loader-large .anna-loader-spinner::before {
+  border-width: 5px;
+}
+
+.anna-loader-large .anna-loader-spinner span {
+  width: 6px;
+  height: 6px;
+}
+
+.anna-loader-large .anna-loader-message {
+  font-size: 0.88rem;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes annaLoaderRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .anna-loader {
+    min-height: 160px;
+    gap: 12px;
+  }
+
+  .anna-loader-spinner {
+    width: 44px;
+    height: 44px;
+  }
+
+  .anna-loader-message {
+    font-size: 0.75rem;
+  }
+}
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+  .anna-loader {
+    min-height: 140px;
+    gap: 11px;
+  }
+
+  .anna-loader-spinner {
+    width: 40px;
+    height: 40px;
+  }
+
+  .anna-loader-spinner::before {
+    border-width: 3px;
+  }
+
+  .anna-loader-message {
+    font-size: 0.7rem;
+  }
+
+  .anna-loader-fullscreen {
+    min-height: 100vh;
+  }
+}
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 375px) {
+  .anna-loader {
+    min-height: 120px;
+    gap: 9px;
+  }
+
+  .anna-loader-spinner {
+    width: 36px;
+    height: 36px;
+  }
+
+  .anna-loader-message {
+    font-size: 0.64rem;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .anna-loader-spinner::before {
+    animation-duration: 1.8s;
+  }
+}

@@ -1,0 +1,867 @@
+/* =========================================================
+   NIVETHA CATERING SERVICE
+   EDIT FOOD PAGE
+   Responsive: Mobile / Tablet / Laptop / Desktop
+========================================================= */
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.edit-food-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px 24px 55px;
+  background: #f7f8fc;
+  box-sizing: border-box;
+}
+
+.edit-food-container {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.edit-food-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 28px;
+}
+
+.edit-food-header-content {
+  min-width: 0;
+}
+
+.edit-food-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #e50046;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.edit-food-header h1 {
+  margin: 0;
+  color: #18181b;
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.edit-food-header p {
+  margin: 9px 0 0;
+  color: #71717a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.edit-food-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 45px;
+  padding: 0 17px;
+  border: 1px solid #dedee5;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #38383f;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 750;
+  white-space: nowrap;
+  box-shadow: 0 5px 16px rgba(20, 20, 40, 0.04);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.edit-food-back-button span {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.edit-food-back-button:hover {
+  border-color: #e50046;
+  background: #fff7fa;
+  color: #e50046;
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.edit-food-alert {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 13px;
+  box-sizing: border-box;
+}
+
+.edit-food-alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 31px;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.edit-food-alert-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.edit-food-alert-content strong {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.edit-food-alert-content span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.edit-food-alert > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.edit-food-error {
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.edit-food-error .edit-food-alert-icon {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+.edit-food-error > button {
+  color: #be123c;
+}
+
+.edit-food-error > button:hover {
+  background: #ffe4e6;
+}
+
+.edit-food-success {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.edit-food-success .edit-food-alert-icon {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.edit-food-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 500px;
+  padding: 40px 20px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #ececf1;
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(20, 20, 40, 0.045);
+}
+
+.edit-food-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #f2c4d4;
+  border-top-color: #e50046;
+  border-radius: 50%;
+  animation: editFoodSpin 0.8s linear infinite;
+}
+
+.edit-food-loading h2 {
+  margin: 20px 0 0;
+  color: #18181b;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.edit-food-loading p {
+  margin: 8px 0 0;
+  color: #71717a;
+  font-size: 13px;
+}
+
+@keyframes editFoodSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.edit-food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.edit-food-card {
+  width: 100%;
+  padding: 25px;
+  background: #ffffff;
+  border: 1px solid #ececf1;
+  border-radius: 19px;
+  box-shadow: 0 8px 28px rgba(20, 20, 40, 0.045);
+  box-sizing: border-box;
+}
+
+.edit-food-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f0f0f3;
+}
+
+.edit-food-card-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 43px;
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  background: #fff0f5;
+  color: #e50046;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.edit-food-card-header h2 {
+  margin: 0;
+  color: #18181b;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.edit-food-card-header p {
+  margin: 4px 0 0;
+  color: #71717a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.edit-food-form-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 20px;
+}
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.edit-food-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.edit-food-full-width {
+  grid-column: 1 / -1;
+}
+
+.edit-food-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #27272a;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.edit-food-field label span {
+  margin-left: 3px;
+  color: #e50046;
+}
+
+.edit-food-field input,
+.edit-food-field select,
+.edit-food-field textarea {
+  width: 100%;
+  border: 1px solid #dedee5;
+  border-radius: 11px;
+  outline: none;
+  background: #fafafd;
+  color: #18181b;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-food-field input,
+.edit-food-field select {
+  height: 46px;
+  padding: 0 13px;
+}
+
+.edit-food-field textarea {
+  min-height: 125px;
+  padding: 12px 13px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.edit-food-field input::placeholder,
+.edit-food-field textarea::placeholder {
+  color: #a1a1aa;
+}
+
+.edit-food-field input:focus,
+.edit-food-field select:focus,
+.edit-food-field textarea:focus {
+  background: #ffffff;
+  border-color: #e50046;
+  box-shadow:
+    0 0 0 3px rgba(229, 0, 70, 0.08);
+}
+
+.edit-food-field input:disabled,
+.edit-food-field select:disabled,
+.edit-food-field textarea:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.edit-food-field small {
+  display: block;
+  margin-top: 6px;
+  color: #909099;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.edit-food-field select {
+  appearance: auto;
+  cursor: pointer;
+}
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+.edit-food-image-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-food-image-preview > span {
+  color: #27272a;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.edit-food-preview-box {
+  width: 100%;
+  max-width: 320px;
+  height: 190px;
+  overflow: hidden;
+  border: 1px solid #ececf1;
+  border-radius: 13px;
+  background:
+    linear-gradient(
+      135deg,
+      #fff2f6,
+      #f5f5f8
+    );
+}
+
+.edit-food-preview-box img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================================
+   CHARACTER COUNT
+========================================================= */
+
+.edit-food-character-count {
+  align-self: flex-end;
+  margin-top: 5px;
+  color: #909099;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   AVAILABILITY
+========================================================= */
+
+.edit-food-availability {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ececf1;
+  border-radius: 14px;
+  background: #fafafd;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.edit-food-availability:hover {
+  border-color: #e8c7d3;
+  background: #fffafd;
+}
+
+.edit-food-availability > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+
+.edit-food-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 28px;
+  padding: 3px;
+  border-radius: 30px;
+  background: #d4d4d8;
+  box-sizing: border-box;
+  transition: background 0.2s ease;
+}
+
+.edit-food-toggle span {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.15);
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.edit-food-availability
+  > input:checked
+  + .edit-food-toggle {
+  background: #e50046;
+}
+
+.edit-food-availability
+  > input:checked
+  + .edit-food-toggle
+  span {
+  transform: translateX(22px);
+}
+
+.edit-food-availability
+  > input:focus-visible
+  + .edit-food-toggle {
+  box-shadow:
+    0 0 0 3px rgba(229, 0, 70, 0.14);
+}
+
+/* =========================================================
+   AVAILABILITY TEXT
+========================================================= */
+
+.edit-food-availability-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.edit-food-availability-text strong {
+  color: #27272a;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.edit-food-availability-text small {
+  color: #71717a;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.edit-food-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 3px;
+}
+
+.edit-food-cancel-button,
+.edit-food-submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    transform 0.18s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-food-cancel-button {
+  border: 1px solid #dedee5;
+  background: #ffffff;
+  color: #55555e;
+}
+
+.edit-food-cancel-button:hover {
+  border-color: #cfcfd6;
+  background: #f7f7f9;
+  color: #27272a;
+}
+
+.edit-food-submit-button {
+  min-width: 145px;
+  border: 1px solid #e50046;
+  background: #e50046;
+  color: #ffffff;
+  box-shadow:
+    0 8px 20px rgba(229, 0, 70, 0.18);
+}
+
+.edit-food-submit-button:hover {
+  border-color: #c9003d;
+  background: #c9003d;
+  box-shadow:
+    0 11px 24px rgba(229, 0, 70, 0.24);
+}
+
+.edit-food-cancel-button:active,
+.edit-food-submit-button:active {
+  transform: scale(0.98);
+}
+
+.edit-food-cancel-button:disabled,
+.edit-food-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   BUTTON SPINNER
+========================================================= */
+
+.edit-food-button-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: editFoodButtonSpin 0.7s linear infinite;
+}
+
+@keyframes editFoodButtonSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   LARGE LAPTOP
+========================================================= */
+
+@media (max-width: 1100px) {
+  .edit-food-page {
+    padding: 28px 20px 45px;
+  }
+
+  .edit-food-container {
+    max-width: 100%;
+  }
+
+  .edit-food-card {
+    padding: 22px;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+  .edit-food-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .edit-food-back-button {
+    width: 100%;
+  }
+
+  .edit-food-form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .edit-food-full-width {
+    grid-column: auto;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .edit-food-page {
+    padding: 20px 14px 35px;
+  }
+
+  .edit-food-header {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .edit-food-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.3px;
+  }
+
+  .edit-food-header h1 {
+    font-size: 30px;
+  }
+
+  .edit-food-header p {
+    font-size: 12px;
+  }
+
+  .edit-food-card {
+    padding: 17px;
+    border-radius: 15px;
+  }
+
+  .edit-food-card-header {
+    gap: 10px;
+    margin-bottom: 19px;
+    padding-bottom: 15px;
+  }
+
+  .edit-food-card-header-icon {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+
+  .edit-food-card-header h2 {
+    font-size: 16px;
+  }
+
+  .edit-food-card-header p {
+    font-size: 11px;
+  }
+
+  .edit-food-field input,
+  .edit-food-field select {
+    height: 44px;
+  }
+
+  .edit-food-field textarea {
+    min-height: 115px;
+  }
+
+  .edit-food-alert {
+    align-items: flex-start;
+    padding: 13px;
+  }
+
+  .edit-food-preview-box {
+    max-width: 100%;
+    height: 180px;
+  }
+
+  .edit-food-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .edit-food-cancel-button,
+  .edit-food-submit-button {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 10px;
+  }
+
+  .edit-food-submit-button {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .edit-food-cancel-button {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+  .edit-food-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .edit-food-card {
+    padding: 14px;
+  }
+
+  .edit-food-header h1 {
+    font-size: 27px;
+  }
+
+  .edit-food-availability {
+    align-items: flex-start;
+  }
+
+  .edit-food-toggle {
+    margin-top: 1px;
+  }
+
+  .edit-food-availability-text small {
+    font-size: 10px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 320px) {
+  .edit-food-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-food-submit-button,
+  .edit-food-cancel-button {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .edit-food-alert-content span {
+    word-break: break-word;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .edit-food-back-button,
+  .edit-food-cancel-button,
+  .edit-food-submit-button,
+  .edit-food-toggle span {
+    transition: none;
+  }
+
+  .edit-food-spinner,
+  .edit-food-button-spinner {
+    animation: none;
+  }
+}
