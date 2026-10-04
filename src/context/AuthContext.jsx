@@ -1,4 +1,3 @@
-
 // ANNA-APP/frontend/src/context/AuthContext.jsx
 
 import React, {
@@ -29,11 +28,20 @@ const getStoredUser = () => {
 
     return JSON.parse(storedUser);
   } catch (error) {
-    console.error(
-      "Failed to read stored Anna user:",
-      error
-    );
+    console.error("FAILED TO READ STORED ANNA USER:", error);
+    return null;
+  }
+};
 
+/* =========================================================
+   GET STORED TOKEN
+========================================================= */
+
+const getStoredToken = () => {
+  try {
+    return localStorage.getItem(TOKEN_KEY) || null;
+  } catch (error) {
+    console.error("FAILED TO READ STORED ANNA TOKEN:", error);
     return null;
   }
 };
@@ -53,10 +61,31 @@ const saveStoredUser = (userData) => {
       JSON.stringify(userData)
     );
   } catch (error) {
-    console.error(
-      "Failed to save Anna user:",
-      error
+    console.error("FAILED TO SAVE ANNA USER:", error);
+  }
+};
+
+/* =========================================================
+   SAVE TOKEN
+========================================================= */
+
+const saveStoredToken = (newToken) => {
+  if (!newToken) {
+    return null;
+  }
+
+  try {
+    const cleanToken = String(newToken).trim();
+
+    localStorage.setItem(
+      TOKEN_KEY,
+      cleanToken
     );
+
+    return cleanToken;
+  } catch (error) {
+    console.error("FAILED TO SAVE ANNA TOKEN:", error);
+    return null;
   }
 };
 
@@ -65,28 +94,41 @@ const saveStoredUser = (userData) => {
 ========================================================= */
 
 export const AuthProvider = ({ children }) => {
+  /* -------------------------------------------------------
+     USER
+  ------------------------------------------------------- */
+
   const [user, setUser] = useState(() => {
     return getStoredUser();
   });
 
+  /* -------------------------------------------------------
+     TOKEN
+  ------------------------------------------------------- */
+
+  const [token, setToken] = useState(() => {
+    return getStoredToken();
+  });
+
+  /* -------------------------------------------------------
+     LOADING
+  ------------------------------------------------------- */
+
   const [loading, setLoading] = useState(false);
 
+  /* -------------------------------------------------------
+     AUTHENTICATION
+  ------------------------------------------------------- */
+
   /*
-   * User data remains stored after logout.
+   * User alone is NOT enough.
    *
-   * This allows:
-   * Login
-   *   ↓
-   * Profile saved
-   *   ↓
-   * Logout
-   *   ↓
-   * Login again
-   *   ↓
-   * Profile details still available
+   * Both user + token are required.
    */
 
-  const isAuthenticated = Boolean(user);
+  const isAuthenticated = Boolean(
+    user && token
+  );
 
   /* =======================================================
      LOGIN
@@ -101,37 +143,100 @@ export const AuthProvider = ({ children }) => {
        * login(user)
        */
 
-      const finalUser =
-        userData ||
-        (authTokenOrUserData &&
-        typeof authTokenOrUserData === "object"
-          ? authTokenOrUserData
-          : null);
+      let finalToken = null;
+      let finalUser = null;
 
-      if (!finalUser) {
-        return false;
-      }
+      /* ---------------------------------------------------
+         login(token, user)
+      --------------------------------------------------- */
 
-      /*
-       * Save user/profile permanently in localStorage.
-       */
-      saveStoredUser(finalUser);
-
-      /*
-       * If backend/login provides a token,
-       * keep it separately.
-       */
       if (
         typeof authTokenOrUserData === "string" &&
         authTokenOrUserData.trim()
       ) {
-        localStorage.setItem(
-          TOKEN_KEY,
-          authTokenOrUserData
-        );
+        finalToken =
+          authTokenOrUserData.trim();
+
+        finalUser = userData;
       }
 
+      /* ---------------------------------------------------
+         login(user)
+      --------------------------------------------------- */
+
+      else if (
+        authTokenOrUserData &&
+        typeof authTokenOrUserData === "object"
+      ) {
+        finalUser =
+          authTokenOrUserData;
+      }
+
+      /* ---------------------------------------------------
+         USER VALIDATION
+      --------------------------------------------------- */
+
+      if (!finalUser) {
+        console.error(
+          "AUTH LOGIN FAILED: USER DATA IS MISSING"
+        );
+
+        return false;
+      }
+
+      /* ---------------------------------------------------
+         TOKEN FALLBACK
+      --------------------------------------------------- */
+
+      /*
+       * If token wasn't passed directly,
+       * check localStorage.
+       */
+
+      if (!finalToken) {
+        finalToken =
+          getStoredToken();
+      }
+
+      /* ---------------------------------------------------
+         TOKEN VALIDATION
+      --------------------------------------------------- */
+
+      if (!finalToken) {
+        console.error(
+          "AUTH LOGIN FAILED: AUTHENTICATION TOKEN IS MISSING"
+        );
+
+        return false;
+      }
+
+      /* ---------------------------------------------------
+         SAVE USER
+      --------------------------------------------------- */
+
+      saveStoredUser(finalUser);
+
+      /* ---------------------------------------------------
+         SAVE TOKEN
+      --------------------------------------------------- */
+
+      const savedToken =
+        saveStoredToken(finalToken);
+
+      if (!savedToken) {
+        console.error(
+          "AUTH LOGIN FAILED: TOKEN COULD NOT BE SAVED"
+        );
+
+        return false;
+      }
+
+      /* ---------------------------------------------------
+         UPDATE REACT STATE
+      --------------------------------------------------- */
+
       setUser(finalUser);
+      setToken(savedToken);
 
       return true;
     },
@@ -144,23 +249,35 @@ export const AuthProvider = ({ children }) => {
 
   const logout = useCallback(() => {
     /*
-     * IMPORTANT:
-     *
-     * Do NOT remove USER_KEY here.
-     *
-     * Profile information must remain available
-     * after logout and next login.
+     * Remove authentication token.
      */
 
-    localStorage.removeItem(TOKEN_KEY);
+    try {
+      localStorage.removeItem(
+        TOKEN_KEY
+      );
+    } catch (error) {
+      console.error(
+        "FAILED TO REMOVE ANNA TOKEN:",
+        error
+      );
+    }
 
     /*
-     * Keep the saved user/profile in localStorage.
-     *
-     * Context user becomes null only for the
-     * current logged-out session.
+     * Clear current session.
      */
+
+    setToken(null);
     setUser(null);
+
+    /*
+     * IMPORTANT:
+     *
+     * USER_KEY is NOT removed.
+     *
+     * Saved profile information remains
+     * available in localStorage.
+     */
 
     return true;
   }, []);
@@ -169,50 +286,80 @@ export const AuthProvider = ({ children }) => {
      UPDATE USER
   ======================================================= */
 
-  const updateUser = useCallback((userData) => {
-    if (!userData) {
-      return;
-    }
+  const updateUser = useCallback(
+    (userData) => {
+      if (!userData) {
+        return;
+      }
 
-    saveStoredUser(userData);
+      saveStoredUser(userData);
 
-    setUser(userData);
-  }, []);
+      setUser(userData);
+    },
+    []
+  );
 
   /* =======================================================
      UPDATE USER FIELDS
   ======================================================= */
 
-  const updateUserFields = useCallback((fields) => {
-    setUser((currentUser) => {
-      const updatedUser = {
-        ...(currentUser || getStoredUser() || {}),
-        ...(fields || {}),
-      };
+  const updateUserFields = useCallback(
+    (fields) => {
+      setUser((currentUser) => {
+        const storedUser =
+          getStoredUser();
 
-      saveStoredUser(updatedUser);
+        const updatedUser = {
+          ...(currentUser ||
+            storedUser ||
+            {}),
+          ...(fields || {}),
+        };
 
-      return updatedUser;
-    });
-  }, []);
+        saveStoredUser(
+          updatedUser
+        );
+
+        return updatedUser;
+      });
+    },
+    []
+  );
 
   /* =======================================================
      UPDATE TOKEN
   ======================================================= */
 
-  const updateToken = useCallback((newToken) => {
-    if (!newToken) {
-      localStorage.removeItem(TOKEN_KEY);
-      return null;
-    }
+  const updateToken = useCallback(
+    (newToken) => {
+      if (!newToken) {
+        try {
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+        } catch (error) {
+          console.error(
+            "FAILED TO REMOVE ANNA TOKEN:",
+            error
+          );
+        }
 
-    localStorage.setItem(
-      TOKEN_KEY,
-      newToken
-    );
+        setToken(null);
 
-    return newToken;
-  }, []);
+        return null;
+      }
+
+      const savedToken =
+        saveStoredToken(
+          newToken
+        );
+
+      setToken(savedToken);
+
+      return savedToken;
+    },
+    []
+  );
 
   /* =======================================================
      CLEAR AUTH
@@ -220,14 +367,39 @@ export const AuthProvider = ({ children }) => {
 
   const clearAuth = useCallback(() => {
     /*
-     * Clear login/session only.
+     * Clear login session only.
      *
-     * USER_KEY is intentionally preserved
-     * because it contains saved profile data.
+     * Keep saved user/profile.
      */
-    localStorage.removeItem(TOKEN_KEY);
 
+    try {
+      localStorage.removeItem(
+        TOKEN_KEY
+      );
+    } catch (error) {
+      console.error(
+        "FAILED TO CLEAR ANNA AUTH:",
+        error
+      );
+    }
+
+    setToken(null);
     setUser(null);
+  }, []);
+
+  /* =======================================================
+     RESTORE AUTH ON APP START
+  ======================================================= */
+
+  useEffect(() => {
+    const storedUser =
+      getStoredUser();
+
+    const storedToken =
+      getStoredToken();
+
+    setUser(storedUser);
+    setToken(storedToken);
   }, []);
 
   /* =======================================================
@@ -235,9 +407,23 @@ export const AuthProvider = ({ children }) => {
   ======================================================= */
 
   useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === USER_KEY) {
-        setUser(getStoredUser());
+    const handleStorageChange = (
+      event
+    ) => {
+      if (
+        event.key === USER_KEY
+      ) {
+        setUser(
+          getStoredUser()
+        );
+      }
+
+      if (
+        event.key === TOKEN_KEY
+      ) {
+        setToken(
+          getStoredToken()
+        );
       }
     };
 
@@ -260,9 +446,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      token:
-        localStorage.getItem(TOKEN_KEY) || null,
-
+      token,
       user,
       loading,
       isAuthenticated,
@@ -279,6 +463,7 @@ export const AuthProvider = ({ children }) => {
       clearAuth,
     }),
     [
+      token,
       user,
       loading,
       isAuthenticated,
@@ -291,8 +476,14 @@ export const AuthProvider = ({ children }) => {
     ]
   );
 
+  /* =======================================================
+     PROVIDER
+  ======================================================= */
+
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={value}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -303,7 +494,8 @@ export const AuthProvider = ({ children }) => {
 ========================================================= */
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context =
+    useContext(AuthContext);
 
   if (!context) {
     throw new Error(

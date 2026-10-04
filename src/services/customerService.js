@@ -35,6 +35,8 @@ customerAPI.interceptors.request.use(
       localStorage.getItem(TOKEN_KEY);
 
     if (token) {
+      config.headers = config.headers || {};
+
       config.headers.Authorization =
         `Bearer ${token}`;
     }
@@ -42,6 +44,25 @@ customerAPI.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  },
+);
+
+/* =====================================================
+   RESPONSE INTERCEPTOR
+===================================================== */
+
+customerAPI.interceptors.response.use(
+  (response) => response,
+
+  (error) => {
+    if (error?.response?.status === 401) {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(
+        "nivetha_anna_user",
+      );
+    }
+
     return Promise.reject(error);
   },
 );
@@ -69,9 +90,12 @@ const handleResponse = (response) => {
 
 /* =====================================================
    GET ALL CUSTOMERS
+   GET /api/customers
 ===================================================== */
 
-const getCustomers = async (params = {}) => {
+const getCustomers = async (
+  params = {},
+) => {
   try {
     const response =
       await customerAPI.get("/", {
@@ -92,6 +116,7 @@ const getCustomers = async (params = {}) => {
 
 /* =====================================================
    GET CUSTOMER BY ID
+   GET /api/customers/:id
 ===================================================== */
 
 const getCustomerById = async (id) => {
@@ -117,36 +142,37 @@ const getCustomerById = async (id) => {
   }
 };
 
-const getCustomer = getCustomerById;
+/*
+  Compatibility alias
+*/
+
+const getCustomer =
+  getCustomerById;
 
 /* =====================================================
    CREATE CUSTOMER
 ===================================================== */
 
-const createCustomer = async (
-  customerData,
-) => {
-  try {
-    const response =
-      await customerAPI.post(
-        "/",
-        customerData,
-      );
+/*
+  Anna backend does NOT currently have:
+  POST /api/customers
 
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Create Customer Error:",
-      error?.response?.data ||
-        error?.message,
-    );
+  Customer accounts are created from the
+  Customer App registration flow.
 
-    throw error;
-  }
+  Keep this function only for compatibility,
+  but fail clearly instead of making a wrong API call.
+*/
+
+const createCustomer = async () => {
+  throw new Error(
+    "Creating customers from Anna App is not supported. Customers register from the Customer App.",
+  );
 };
 
 /* =====================================================
    UPDATE CUSTOMER
+   PUT /api/customers/:id
 ===================================================== */
 
 const updateCustomer = async (
@@ -156,6 +182,15 @@ const updateCustomer = async (
   if (!id) {
     throw new Error(
       "Customer ID is required",
+    );
+  }
+
+  if (
+    !customerData ||
+    typeof customerData !== "object"
+  ) {
+    throw new Error(
+      "Customer data is required",
     );
   }
 
@@ -180,6 +215,7 @@ const updateCustomer = async (
 
 /* =====================================================
    DELETE CUSTOMER
+   DELETE /api/customers/:id
 ===================================================== */
 
 const deleteCustomer = async (id) => {
@@ -209,20 +245,23 @@ const deleteCustomer = async (id) => {
 
 /* =====================================================
    SEARCH CUSTOMERS
+   GET /api/customers?search=query
 ===================================================== */
 
-const searchCustomers = async (query) => {
+const searchCustomers = async (
+  query,
+) => {
+  const searchText = String(
+    query || "",
+  ).trim();
+
   try {
     const response =
-      await customerAPI.get(
-        "/search",
-        {
-          params: {
-            search: query,
-            q: query,
-          },
+      await customerAPI.get("/", {
+        params: {
+          search: searchText,
         },
-      );
+      });
 
     return handleResponse(response);
   } catch (error) {
@@ -240,7 +279,23 @@ const searchCustomers = async (query) => {
    GET CUSTOMER BOOKINGS
 ===================================================== */
 
-const getCustomerBookings = async (id) => {
+/*
+  Backend returns customer bookings
+  directly from:
+
+  GET /api/customers/:id
+
+  Response:
+  {
+    success: true,
+    customer: {...},
+    bookings: [...]
+  }
+*/
+
+const getCustomerBookings = async (
+  id,
+) => {
   if (!id) {
     throw new Error(
       "Customer ID is required",
@@ -250,10 +305,21 @@ const getCustomerBookings = async (id) => {
   try {
     const response =
       await customerAPI.get(
-        `/${id}/bookings`,
+        `/${id}`,
       );
 
-    return handleResponse(response);
+    const data =
+      handleResponse(response);
+
+    return {
+      ...data,
+      bookings:
+        Array.isArray(
+          data.bookings,
+        )
+          ? data.bookings
+          : [],
+    };
   } catch (error) {
     console.error(
       "Get Customer Bookings Error:",
@@ -273,9 +339,12 @@ const customerService = {
   getCustomers,
   getCustomerById,
   getCustomer,
+
   createCustomer,
+
   updateCustomer,
   deleteCustomer,
+
   searchCustomers,
   getCustomerBookings,
 };
@@ -290,9 +359,12 @@ export {
   getCustomers,
   getCustomerById,
   getCustomer,
+
   createCustomer,
+
   updateCustomer,
   deleteCustomer,
+
   searchCustomers,
   getCustomerBookings,
 };

@@ -1,5 +1,3 @@
-// ANNA-APP/frontend/src/services/foodService.js
-
 import axios from "axios";
 
 /* =====================================================
@@ -26,7 +24,6 @@ const foodAPI = axios.create({
 
 /* =====================================================
    REQUEST INTERCEPTOR
-   Automatically sends owner JWT token
 ===================================================== */
 
 foodAPI.interceptors.request.use(
@@ -41,9 +38,29 @@ foodAPI.interceptors.request.use(
 
     return config;
   },
+  (error) =>
+    Promise.reject(error)
+);
+
+/* =====================================================
+   RESPONSE INTERCEPTOR
+===================================================== */
+
+foodAPI.interceptors.response.use(
+  (response) => response,
   (error) => {
+    if (error?.response?.status === 401) {
+      localStorage.removeItem(
+        "nivetha_anna_token"
+      );
+
+      localStorage.removeItem(
+        "nivetha_anna_user"
+      );
+    }
+
     return Promise.reject(error);
-  },
+  }
 );
 
 /* =====================================================
@@ -53,14 +70,14 @@ foodAPI.interceptors.request.use(
 const handleResponse = (response) => {
   if (!response?.data) {
     throw new Error(
-      "Invalid server response",
+      "Invalid server response"
     );
   }
 
   if (response.data.success === false) {
     throw new Error(
       response.data.message ||
-        "Request failed",
+        "Request failed"
     );
   }
 
@@ -73,17 +90,16 @@ const handleResponse = (response) => {
 
 const getFoods = async (params = {}) => {
   try {
-    const response =
-      await foodAPI.get("/", {
-        params,
-      });
+    const response = await foodAPI.get("/", {
+      params,
+    });
 
     return handleResponse(response);
   } catch (error) {
     console.error(
       "Get Foods Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -104,7 +120,7 @@ const getAvailableFoods = async () => {
     console.error(
       "Get Available Foods Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -118,7 +134,7 @@ const getAvailableFoods = async () => {
 const getFoodById = async (id) => {
   if (!id) {
     throw new Error(
-      "Food ID is required",
+      "Food ID is required"
     );
   }
 
@@ -131,7 +147,7 @@ const getFoodById = async (id) => {
     console.error(
       "Get Food Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -148,53 +164,65 @@ const createFood = async (foodData) => {
     typeof foodData !== "object"
   ) {
     throw new Error(
-      "Food data is required",
+      "Food data is required"
+    );
+  }
+
+  const payload = {
+    name: String(
+      foodData.name || ""
+    ).trim(),
+
+    tamilName: String(
+      foodData.tamilName || ""
+    ).trim(),
+
+    category: String(
+      foodData.category || ""
+    ).trim(),
+
+    type: String(
+      foodData.type || ""
+    ).trim(),
+
+    price: Number(foodData.price),
+
+    image: String(
+      foodData.image || ""
+    ).trim(),
+
+    description: String(
+      foodData.description || ""
+    ).trim(),
+
+    available:
+      foodData.available !== false,
+  };
+
+  if (
+    !payload.name ||
+    !payload.category ||
+    !payload.type
+  ) {
+    throw new Error(
+      "Name, category and type are required"
+    );
+  }
+
+  if (
+    !Number.isFinite(payload.price) ||
+    payload.price < 0
+  ) {
+    throw new Error(
+      "Price must be a valid number"
     );
   }
 
   try {
-    const payload = {
-      ...foodData,
-
-      name: String(
-        foodData.name || "",
-      ).trim(),
-
-      tamilName: String(
-        foodData.tamilName || "",
-      ).trim(),
-
-      category: String(
-        foodData.category || "",
-      ).trim(),
-
-      type: String(
-        foodData.type || "",
-      ).trim(),
-
-      description: String(
-        foodData.description || "",
-      ).trim(),
-
-      image: String(
-        foodData.image || "",
-      ).trim(),
-
-      isAvailable:
-        foodData.isAvailable !== false,
-
-      displayOrder:
-        Number.isFinite(
-          Number(foodData.displayOrder),
-        )
-          ? Number(foodData.displayOrder)
-          : 0,
-    };
-
     const response =
       await foodAPI.post(
         "/",
-        payload,
+        payload
       );
 
     return handleResponse(response);
@@ -202,7 +230,7 @@ const createFood = async (foodData) => {
     console.error(
       "Create Food Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -215,11 +243,11 @@ const createFood = async (foodData) => {
 
 const updateFood = async (
   id,
-  foodData,
+  foodData
 ) => {
   if (!id) {
     throw new Error(
-      "Food ID is required",
+      "Food ID is required"
     );
   }
 
@@ -228,15 +256,76 @@ const updateFood = async (
     typeof foodData !== "object"
   ) {
     throw new Error(
-      "Food data is required",
+      "Food data is required"
     );
+  }
+
+  const payload = {
+    ...foodData,
+  };
+
+  if (payload.name !== undefined) {
+    payload.name = String(
+      payload.name
+    ).trim();
+  }
+
+  if (payload.tamilName !== undefined) {
+    payload.tamilName = String(
+      payload.tamilName
+    ).trim();
+  }
+
+  if (payload.category !== undefined) {
+    payload.category = String(
+      payload.category
+    ).trim();
+  }
+
+  if (payload.type !== undefined) {
+    payload.type = String(
+      payload.type
+    ).trim();
+  }
+
+  if (payload.description !== undefined) {
+    payload.description = String(
+      payload.description
+    ).trim();
+  }
+
+  if (payload.image !== undefined) {
+    payload.image = String(
+      payload.image
+    ).trim();
+  }
+
+  if (payload.price !== undefined) {
+    payload.price = Number(
+      payload.price
+    );
+  }
+
+  if (payload.available !== undefined) {
+    if (
+      typeof payload.available ===
+      "string"
+    ) {
+      payload.available =
+        payload.available
+          .trim()
+          .toLowerCase() === "true";
+    } else {
+      payload.available =
+        Boolean(payload.available);
+    }
   }
 
   try {
     const response =
       await foodAPI.put(
         `/${id}`,
-        foodData,
+        payload
       );
 
     return handleResponse(response);
@@ -244,7 +333,7 @@ const updateFood = async (
     console.error(
       "Update Food Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -255,32 +344,37 @@ const updateFood = async (
    TOGGLE FOOD AVAILABILITY
 ===================================================== */
 
-const toggleFoodAvailability = async (
-  id,
-) => {
-  if (!id) {
-    throw new Error(
-      "Food ID is required",
-    );
-  }
+const toggleFoodAvailability =
+  async (id) => {
+    if (!id) {
+      throw new Error(
+        "Food ID is required"
+      );
+    }
 
-  try {
-    const response =
-      await foodAPI.patch(
-        `/${id}/availability`,
+    try {
+      /*
+        IMPORTANT:
+        Backend route is:
+        PATCH /foods/:id/toggle-availability
+      */
+
+      const response =
+        await foodAPI.patch(
+          `/${id}/toggle-availability`
+        );
+
+      return handleResponse(response);
+    } catch (error) {
+      console.error(
+        "Toggle Food Availability Error:",
+        error?.response?.data ||
+          error?.message
       );
 
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Toggle Food Availability Error:",
-      error?.response?.data ||
-        error?.message,
-    );
-
-    throw error;
-  }
-};
+      throw error;
+    }
+  };
 
 const updateFoodAvailability =
   toggleFoodAvailability;
@@ -292,20 +386,22 @@ const updateFoodAvailability =
 const deleteFood = async (id) => {
   if (!id) {
     throw new Error(
-      "Food ID is required",
+      "Food ID is required"
     );
   }
 
   try {
     const response =
-      await foodAPI.delete(`/${id}`);
+      await foodAPI.delete(
+        `/${id}`
+      );
 
     return handleResponse(response);
   } catch (error) {
     console.error(
       "Delete Food Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -329,6 +425,10 @@ const foodService = {
 
   deleteFood,
 };
+
+/* =====================================================
+   DEFAULT EXPORT
+===================================================== */
 
 export default foodService;
 

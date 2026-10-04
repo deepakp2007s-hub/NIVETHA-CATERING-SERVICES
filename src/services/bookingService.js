@@ -2,9 +2,9 @@
 
 import axios from "axios";
 
-/* =====================================================
-   API CONFIGURATION
-===================================================== */
+// ======================================================
+// API CONFIGURATION
+// ======================================================
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
@@ -12,9 +12,9 @@ const API_BASE_URL =
 
 const TOKEN_KEY = "nivetha_anna_token";
 
-/* =====================================================
-   AXIOS INSTANCE
-===================================================== */
+// ======================================================
+// AXIOS INSTANCE
+// ======================================================
 
 const bookingAPI = axios.create({
   baseURL: `${API_BASE_URL}/bookings`,
@@ -24,10 +24,9 @@ const bookingAPI = axios.create({
   timeout: 15000,
 });
 
-/* =====================================================
-   REQUEST INTERCEPTOR
-   Automatically sends owner JWT token
-===================================================== */
+// ======================================================
+// REQUEST INTERCEPTOR
+// ======================================================
 
 bookingAPI.interceptors.request.use(
   (config) => {
@@ -35,43 +34,111 @@ bookingAPI.interceptors.request.use(
       localStorage.getItem(TOKEN_KEY);
 
     if (token) {
+      config.headers =
+        config.headers || {};
+
       config.headers.Authorization =
         `Bearer ${token}`;
     }
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) =>
+    Promise.reject(error)
 );
 
-/* =====================================================
-   RESPONSE HANDLER
-===================================================== */
+// ======================================================
+// RESPONSE INTERCEPTOR
+// ======================================================
+
+bookingAPI.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error?.response?.status === 401
+    ) {
+      localStorage.removeItem(
+        TOKEN_KEY
+      );
+
+      localStorage.removeItem(
+        "nivetha_anna_user"
+      );
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+// ======================================================
+// RESPONSE HANDLER
+// ======================================================
 
 const handleResponse = (response) => {
-  if (!response?.data) {
+  if (!response) {
     throw new Error(
-      "Invalid server response",
+      "No response received from server"
     );
   }
 
-  if (response.data.success === false) {
+  const data = response.data;
+
+  if (!data) {
     throw new Error(
-      response.data.message ||
-        "Request failed",
+      "Invalid server response"
     );
   }
 
-  return response.data;
+  if (data.success === false) {
+    throw new Error(
+      data.message ||
+        "Booking request failed"
+    );
+  }
+
+  return data;
 };
 
-/* =====================================================
-   GET ALL BOOKINGS
-===================================================== */
+// ======================================================
+// ERROR HANDLER
+// ======================================================
 
-const getBookings = async (params = {}) => {
+const handleError = (
+  error,
+  fallbackMessage
+) => {
+  console.error(
+    fallbackMessage,
+    error?.response?.data ||
+      error?.message ||
+      error
+  );
+
+  const message =
+    error?.response?.data?.message ||
+    error?.message ||
+    fallbackMessage;
+
+  const customError =
+    new Error(message);
+
+  customError.status =
+    error?.response?.status;
+
+  customError.response =
+    error?.response;
+
+  throw customError;
+};
+
+// ======================================================
+// GET ALL BOOKINGS
+// GET /api/bookings
+// ======================================================
+
+const getBookings = async (
+  params = {}
+) => {
   try {
     const response =
       await bookingAPI.get("/", {
@@ -80,341 +147,483 @@ const getBookings = async (params = {}) => {
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Get Bookings Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to fetch bookings"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   GET BOOKING BY ID
-===================================================== */
+// ======================================================
+// GET SINGLE BOOKING
+// GET /api/bookings/:id
+// ======================================================
 
-const getBookingById = async (id) => {
+const getBookingById = async (
+  id
+) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
+      "Booking ID is required"
     );
   }
 
   try {
     const response =
-      await bookingAPI.get(`/${id}`);
-
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Get Booking Error:",
-      error?.response?.data ||
-        error?.message,
-    );
-
-    throw error;
-  }
-};
-
-const getBooking = getBookingById;
-
-/* =====================================================
-   CREATE BOOKING
-===================================================== */
-
-const createBooking = async (
-  bookingData,
-) => {
-  try {
-    const response =
-      await bookingAPI.post(
-        "/",
-        bookingData,
+      await bookingAPI.get(
+        `/${id}`
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Create Booking Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to fetch booking"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   UPDATE BOOKING
-===================================================== */
+const getBooking =
+  getBookingById;
 
-const updateBooking = async (
+// ======================================================
+// UPDATE NUMBER OF PERSONS
+// PUT /api/bookings/:id/persons
+// ======================================================
+
+const updateBookingPersons = async (
   id,
-  bookingData,
+  persons
 ) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
+      "Booking ID is required"
+    );
+  }
+
+  const numericPersons =
+    Number(persons);
+
+  if (
+    !Number.isInteger(
+      numericPersons
+    ) ||
+    numericPersons < 1
+  ) {
+    throw new Error(
+      "Persons must be a valid number greater than 0"
     );
   }
 
   try {
     const response =
       await bookingAPI.put(
-        `/${id}`,
-        bookingData,
+        `/${id}/persons`,
+        {
+          persons:
+            numericPersons,
+        }
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Update Booking Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to update number of persons"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   UPDATE BOOKING STATUS
-===================================================== */
+// ======================================================
+// ACCEPT BOOKING
+// PUT /api/bookings/:id/accept
+// ======================================================
 
-const updateBookingStatus = async (
-  id,
-  status,
+const acceptBooking = async (
+  id
 ) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
-    );
-  }
-
-  if (!status) {
-    throw new Error(
-      "Booking status is required",
+      "Booking ID is required"
     );
   }
 
   try {
     const response =
-      await bookingAPI.patch(
-        `/${id}/status`,
-        { status },
+      await bookingAPI.put(
+        `/${id}/accept`
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Update Booking Status Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to accept booking"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   ACCEPT BOOKING
-===================================================== */
-
-const acceptBooking = async (id) => {
-  if (!id) {
-    throw new Error(
-      "Booking ID is required",
-    );
-  }
-
-  try {
-    const response =
-      await bookingAPI.patch(
-        `/${id}/accept`,
-      );
-
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Accept Booking Error:",
-      error?.response?.data ||
-        error?.message,
-    );
-
-    throw error;
-  }
-};
-
-/* =====================================================
-   REJECT BOOKING
-===================================================== */
+// ======================================================
+// REJECT BOOKING
+// PUT /api/bookings/:id/reject
+// ======================================================
 
 const rejectBooking = async (
   id,
-  reason = "",
+  reason = ""
 ) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
+      "Booking ID is required"
     );
   }
 
   try {
     const response =
-      await bookingAPI.patch(
+      await bookingAPI.put(
         `/${id}/reject`,
-        { reason },
+        {
+          reason: String(
+            reason || ""
+          ).trim(),
+        }
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Reject Booking Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to reject booking"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   COMPLETE BOOKING
-===================================================== */
+// ======================================================
+// CONFIRM BOOKING
+// PUT /api/bookings/:id/confirm
+// ======================================================
 
-const completeBooking = async (id) => {
+const confirmBooking = async (
+  id
+) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
+      "Booking ID is required"
     );
   }
 
   try {
     const response =
-      await bookingAPI.patch(
-        `/${id}/complete`,
+      await bookingAPI.put(
+        `/${id}/confirm`
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Complete Booking Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to confirm booking"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   CANCEL BOOKING
-===================================================== */
+// ======================================================
+// COMPLETE BOOKING
+// PUT /api/bookings/:id/complete
+// ======================================================
 
-const cancelBooking = async (id) => {
+const completeBooking = async (
+  id
+) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
+      "Booking ID is required"
     );
   }
 
   try {
     const response =
-      await bookingAPI.patch(
+      await bookingAPI.put(
+        `/${id}/complete`
+      );
+
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(
+      error,
+      "Failed to complete booking"
+    );
+  }
+};
+
+// ======================================================
+// CANCEL BOOKING
+// PUT /api/bookings/:id/cancel
+// ======================================================
+
+const cancelBooking = async (
+  id,
+  reason = ""
+) => {
+  if (!id) {
+    throw new Error(
+      "Booking ID is required"
+    );
+  }
+
+  try {
+    const response =
+      await bookingAPI.put(
         `/${id}/cancel`,
+        {
+          reason: String(
+            reason || ""
+          ).trim(),
+        }
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Cancel Booking Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to cancel booking"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   DELETE BOOKING
-===================================================== */
+// ======================================================
+// DELETE BOOKING
+// DELETE /api/bookings/:id
+// ======================================================
 
-const deleteBooking = async (id) => {
+const deleteBooking = async (
+  id
+) => {
   if (!id) {
     throw new Error(
-      "Booking ID is required",
+      "Booking ID is required"
     );
   }
 
   try {
     const response =
       await bookingAPI.delete(
-        `/${id}`,
+        `/${id}`
       );
 
     return handleResponse(response);
   } catch (error) {
-    console.error(
-      "Delete Booking Error:",
-      error?.response?.data ||
-        error?.message,
+    return handleError(
+      error,
+      "Failed to delete booking"
     );
-
-    throw error;
   }
 };
 
-/* =====================================================
-   TODAY BOOKINGS
-===================================================== */
+// ======================================================
+// CREATE BOOKING
+// ======================================================
+//
+// Anna app normally receives bookings
+// from Customer App.
+// This method is kept for AppContext compatibility.
+//
+// Backend currently does NOT expose POST /api/bookings.
+// Do not call this from Anna UI unless a create route
+// is added later.
+//
+
+const createBooking = async (
+  bookingData
+) => {
+  if (!bookingData) {
+    throw new Error(
+      "Booking data is required"
+    );
+  }
+
+  try {
+    const response =
+      await bookingAPI.post(
+        "/",
+        bookingData
+      );
+
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(
+      error,
+      "Failed to create booking"
+    );
+  }
+};
+
+// ======================================================
+// UPDATE BOOKING
+// ======================================================
+//
+// Backend currently exposes only
+// PUT /:id/persons for owner-side update.
+// Keep this function for compatibility.
+//
+
+const updateBooking = async (
+  id,
+  bookingData = {}
+) => {
+  if (!id) {
+    throw new Error(
+      "Booking ID is required"
+    );
+  }
+
+  if (
+    bookingData.persons !== undefined
+  ) {
+    return updateBookingPersons(
+      id,
+      bookingData.persons
+    );
+  }
+
+  throw new Error(
+    "Only number of persons can currently be updated from the Anna app"
+  );
+};
+
+// ======================================================
+// GENERIC STATUS UPDATE
+// ======================================================
+//
+// The backend intentionally uses specific
+// status action endpoints instead of
+// PATCH /:id/status.
+//
+
+const updateBookingStatus = async (
+  id,
+  status
+) => {
+  if (!id) {
+    throw new Error(
+      "Booking ID is required"
+    );
+  }
+
+  if (!status) {
+    throw new Error(
+      "Booking status is required"
+    );
+  }
+
+  switch (status) {
+    case "Accepted":
+      return acceptBooking(id);
+
+    case "Confirmed":
+      return confirmBooking(id);
+
+    case "Completed":
+      return completeBooking(id);
+
+    case "Rejected":
+      return rejectBooking(id);
+
+    case "Cancelled":
+      return cancelBooking(id);
+
+    default:
+      throw new Error(
+        `Unsupported booking status: ${status}`
+      );
+  }
+};
+
+// ======================================================
+// GET TODAY BOOKINGS
+// ======================================================
+//
+// Backend currently does not expose /today.
+// Use date filter on GET /api/bookings instead.
+//
 
 const getTodayBookings = async () => {
-  try {
-    const response =
-      await bookingAPI.get(
-        "/today",
-      );
+  const today =
+    new Date()
+      .toISOString()
+      .split("T")[0];
 
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Get Today Bookings Error:",
-      error?.response?.data ||
-        error?.message,
-    );
-
-    throw error;
-  }
+  return getBookings({
+    date: today,
+  });
 };
 
-/* =====================================================
-   UPCOMING BOOKINGS
-===================================================== */
+// ======================================================
+// GET UPCOMING BOOKINGS
+// ======================================================
+//
+// Backend currently does not expose /upcoming.
+// Fetch all bookings and filter event date
+// on frontend.
+//
 
-const getUpcomingBookings = async () => {
-  try {
+const getUpcomingBookings =
+  async () => {
     const response =
-      await bookingAPI.get(
-        "/upcoming",
-      );
+      await getBookings();
 
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Get Upcoming Bookings Error:",
-      error?.response?.data ||
-        error?.message,
+    const bookings =
+      Array.isArray(
+        response?.bookings
+      )
+        ? response.bookings
+        : [];
+
+    const now =
+      new Date();
+
+    now.setHours(
+      0,
+      0,
+      0,
+      0
     );
 
-    throw error;
-  }
-};
+    const upcoming =
+      bookings.filter(
+        (booking) => {
+          if (
+            !booking?.eventDate
+          ) {
+            return false;
+          }
 
-/* =====================================================
-   BOOKING SERVICE
-===================================================== */
+          const eventDate =
+            new Date(
+              booking.eventDate
+            );
+
+          eventDate.setHours(
+            0,
+            0,
+            0,
+            0
+          );
+
+          return eventDate >= now;
+        }
+      );
+
+    return {
+      ...response,
+      bookings: upcoming,
+      count: upcoming.length,
+    };
+  };
+
+// ======================================================
+// BOOKING SERVICE
+// ======================================================
 
 const bookingService = {
   getBookings,
@@ -423,11 +632,13 @@ const bookingService = {
 
   createBooking,
   updateBooking,
+  updateBookingPersons,
 
   updateBookingStatus,
 
   acceptBooking,
   rejectBooking,
+  confirmBooking,
   completeBooking,
   cancelBooking,
   deleteBooking,
@@ -436,11 +647,15 @@ const bookingService = {
   getUpcomingBookings,
 };
 
+// ======================================================
+// DEFAULT EXPORT
+// ======================================================
+
 export default bookingService;
 
-/* =====================================================
-   NAMED EXPORTS
-===================================================== */
+// ======================================================
+// NAMED EXPORTS
+// ======================================================
 
 export {
   getBookings,
@@ -449,11 +664,13 @@ export {
 
   createBooking,
   updateBooking,
+  updateBookingPersons,
 
   updateBookingStatus,
 
   acceptBooking,
   rejectBooking,
+  confirmBooking,
   completeBooking,
   cancelBooking,
   deleteBooking,

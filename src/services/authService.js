@@ -1,8 +1,10 @@
+// ANNA-APP/frontend/src/services/authService.js
+
 import axios from "axios";
 
-/* =====================================================
-   API CONFIGURATION
-===================================================== */
+// ======================================================
+// API CONFIGURATION
+// ======================================================
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
@@ -16,22 +18,23 @@ const authAPI = axios.create({
   timeout: 15000,
 });
 
-/* =====================================================
-   STORAGE KEYS
-===================================================== */
+// ======================================================
+// STORAGE KEYS
+// ======================================================
 
 const USER_KEY = "nivetha_anna_user";
 const TOKEN_KEY = "nivetha_anna_token";
 
-/* =====================================================
-   AXIOS REQUEST INTERCEPTOR
-===================================================== */
+// ======================================================
+// REQUEST INTERCEPTOR
+// ======================================================
 
 authAPI.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(TOKEN_KEY);
 
     if (token) {
+      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -40,45 +43,86 @@ authAPI.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-/* =====================================================
-   AXIOS RESPONSE INTERCEPTOR
-===================================================== */
+// ======================================================
+// RESPONSE INTERCEPTOR
+// ======================================================
 
 authAPI.interceptors.response.use(
   (response) => response,
   (error) => {
+    const status = error?.response?.status;
+
+    // Invalid/expired authentication
+    if (status === 401) {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    }
+
+    // Keep 403 user data unless backend specifically
+    // says the account is inactive.
     if (
-      error?.response?.status === 401 ||
-      error?.response?.status === 403
+      status === 403 &&
+      error?.response?.data?.message ===
+        "Owner account is inactive"
     ) {
       localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
     }
 
     return Promise.reject(error);
   }
 );
 
-/* =====================================================
-   LOCAL STORAGE
-===================================================== */
+// ======================================================
+// ERROR MESSAGE HELPER
+// ======================================================
+
+const getErrorMessage = (error, fallback) => {
+  return (
+    error?.response?.data?.message ||
+    error?.message ||
+    fallback
+  );
+};
+
+// ======================================================
+// LOCAL STORAGE - USER
+// ======================================================
 
 const getStoredUser = () => {
   try {
     const user = localStorage.getItem(USER_KEY);
+
     return user ? JSON.parse(user) : null;
   } catch (error) {
-    console.error("GET STORED USER ERROR:", error);
+    console.error(
+      "GET STORED USER ERROR:",
+      error
+    );
+
     return null;
   }
 };
 
 const saveUser = (user) => {
-  if (!user) return;
+  if (!user) {
+    return null;
+  }
 
   try {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(
+      USER_KEY,
+      JSON.stringify(user)
+    );
+
+    return user;
   } catch (error) {
-    console.error("SAVE USER ERROR:", error);
+    console.error(
+      "SAVE USER ERROR:",
+      error
+    );
+
+    return null;
   }
 };
 
@@ -86,11 +130,22 @@ const clearUser = () => {
   localStorage.removeItem(USER_KEY);
 };
 
+// ======================================================
+// LOCAL STORAGE - TOKEN
+// ======================================================
+
 const getStoredToken = () => {
   try {
-    return localStorage.getItem(TOKEN_KEY) || null;
+    return (
+      localStorage.getItem(TOKEN_KEY) ||
+      null
+    );
   } catch (error) {
-    console.error("GET STORED TOKEN ERROR:", error);
+    console.error(
+      "GET STORED TOKEN ERROR:",
+      error
+    );
+
     return null;
   }
 };
@@ -103,7 +158,10 @@ const saveToken = (token) => {
 
   const cleanToken = String(token).trim();
 
-  localStorage.setItem(TOKEN_KEY, cleanToken);
+  localStorage.setItem(
+    TOKEN_KEY,
+    cleanToken
+  );
 
   return cleanToken;
 };
@@ -112,20 +170,47 @@ const clearToken = () => {
   localStorage.removeItem(TOKEN_KEY);
 };
 
-/* =====================================================
-   LOGIN
-   POST /api/auth/login
-===================================================== */
+// ======================================================
+// LOGIN
+// POST /api/auth/login
+// ======================================================
 
 const login = async (loginData = {}) => {
   try {
-    const phone = String(loginData.phone || "").trim();
-    const password = String(loginData.password || "");
+    const email = String(
+      loginData.email || ""
+    )
+      .trim()
+      .toLowerCase();
 
-    const response = await authAPI.post("/auth/login", {
-      phone,
+    const phone = String(
+      loginData.phone || ""
+    ).trim();
+
+    const password = String(
+      loginData.password || ""
+    );
+
+    if ((!email && !phone) || !password) {
+      throw new Error(
+        "Phone/email and password are required"
+      );
+    }
+
+    const payload = {
       password,
-    });
+    };
+
+    if (email) {
+      payload.email = email;
+    } else {
+      payload.phone = phone;
+    }
+
+    const response = await authAPI.post(
+      "/auth/login",
+      payload
+    );
 
     const data = response.data;
 
@@ -168,21 +253,36 @@ const login = async (loginData = {}) => {
   } catch (error) {
     console.error(
       "LOGIN API ERROR:",
-      error?.response?.data || error?.message || error
+      error?.response?.data ||
+        error?.message ||
+        error
     );
 
-    throw error;
+    throw new Error(
+      getErrorMessage(
+        error,
+        "Owner login failed"
+      )
+    );
   }
 };
 
-/* =====================================================
-   GET CURRENT OWNER
-   GET /api/auth/profile
-===================================================== */
+// ======================================================
+// GET CURRENT OWNER
+// GET /api/auth/profile
+// ======================================================
 
 const getCurrentUser = async () => {
   try {
-    const response = await authAPI.get("/auth/profile");
+    const token = getStoredToken();
+
+    if (!token) {
+      return null;
+    }
+
+    const response = await authAPI.get(
+      "/auth/profile"
+    );
 
     const data = response.data;
 
@@ -193,42 +293,93 @@ const getCurrentUser = async () => {
       data?.data?.user ||
       null;
 
-    if (owner) {
-      saveUser(owner);
-
-      return {
-        ...data,
-        success: data?.success ?? true,
-        owner,
-        user: owner,
-      };
+    if (!owner) {
+      return null;
     }
 
-    return null;
+    saveUser(owner);
+
+    return {
+      ...data,
+      success: data?.success ?? true,
+      owner,
+      user: owner,
+    };
   } catch (error) {
     console.error(
       "GET CURRENT USER API ERROR:",
-      error?.response?.data || error?.message || error
+      error?.response?.data ||
+        error?.message ||
+        error
     );
 
-    throw error;
+    throw new Error(
+      getErrorMessage(
+        error,
+        "Failed to load owner profile"
+      )
+    );
   }
 };
 
-/* =====================================================
-   UPDATE PROFILE
-   PUT /api/auth/profile
-===================================================== */
+// ======================================================
+// UPDATE PROFILE
+// PUT /api/auth/profile
+// ======================================================
 
-const updateProfile = async (profileData = {}) => {
+const updateProfile = async (
+  profileData = {}
+) => {
   try {
-    const payload = {
-      name: String(profileData.name || "").trim(),
-      phone: String(profileData.phone || "").trim(),
-      email: String(profileData.email || "").trim(),
-      address: String(profileData.address || "").trim(),
-      profileImage: profileData.profileImage || "",
-    };
+    const payload = {};
+
+    if (
+      profileData.name !== undefined
+    ) {
+      payload.name = String(
+        profileData.name
+      ).trim();
+    }
+
+    if (
+      profileData.phone !== undefined
+    ) {
+      payload.phone = String(
+        profileData.phone
+      ).trim();
+    }
+
+    if (
+      profileData.email !== undefined
+    ) {
+      payload.email = String(
+        profileData.email
+      )
+        .trim()
+        .toLowerCase();
+    }
+
+    if (
+      profileData.language !== undefined
+    ) {
+      payload.language =
+        profileData.language;
+    }
+
+    if (
+      profileData.address !== undefined
+    ) {
+      payload.address = String(
+        profileData.address
+      ).trim();
+    }
+
+    if (
+      profileData.profileImage !== undefined
+    ) {
+      payload.profileImage =
+        profileData.profileImage || "";
+    }
 
     const response = await authAPI.put(
       "/auth/profile",
@@ -248,32 +399,51 @@ const updateProfile = async (profileData = {}) => {
       saveUser(owner);
     }
 
+    const storedUser =
+      owner || getStoredUser();
+
     return {
       ...data,
       success: data?.success ?? true,
-      owner: owner || getStoredUser(),
-      user: owner || getStoredUser(),
+      owner: storedUser,
+      user: storedUser,
     };
   } catch (error) {
     console.error(
       "UPDATE PROFILE API ERROR:",
-      error?.response?.data || error?.message || error
+      error?.response?.data ||
+        error?.message ||
+        error
     );
 
-    throw error;
+    throw new Error(
+      getErrorMessage(
+        error,
+        "Failed to update owner profile"
+      )
+    );
   }
 };
 
-/* =====================================================
-   CHANGE PASSWORD
-   PUT /api/auth/change-password
-===================================================== */
+// ======================================================
+// CHANGE PASSWORD
+// PUT /api/auth/change-password
+// ======================================================
 
 const changePassword = async (
   currentPassword,
   newPassword
 ) => {
   try {
+    if (
+      !currentPassword ||
+      !newPassword
+    ) {
+      throw new Error(
+        "Current password and new password are required"
+      );
+    }
+
     const response = await authAPI.put(
       "/auth/change-password",
       {
@@ -286,21 +456,27 @@ const changePassword = async (
   } catch (error) {
     console.error(
       "CHANGE PASSWORD API ERROR:",
-      error?.response?.data || error?.message || error
+      error?.response?.data ||
+        error?.message ||
+        error
     );
 
-    throw error;
+    throw new Error(
+      getErrorMessage(
+        error,
+        "Failed to change password"
+      )
+    );
   }
 };
 
-/* =====================================================
-   LOGOUT
-   Backend has no logout route.
-   JWT is stateless, so clear local token.
-===================================================== */
+// ======================================================
+// LOGOUT
+// ======================================================
 
 const logout = () => {
   clearToken();
+  clearUser();
 
   return {
     success: true,
@@ -308,17 +484,27 @@ const logout = () => {
   };
 };
 
-/* =====================================================
-   AUTH STATUS
-===================================================== */
+// ======================================================
+// AUTHENTICATION STATUS
+// ======================================================
 
 const isAuthenticated = () => {
   return Boolean(getStoredToken());
 };
 
-/* =====================================================
-   EXPORT
-===================================================== */
+// ======================================================
+// GET API INSTANCE
+// Useful if another frontend service needs the
+// authenticated Axios configuration.
+// ======================================================
+
+const getAPI = () => {
+  return authAPI;
+};
+
+// ======================================================
+// EXPORT
+// ======================================================
 
 const authService = {
   login,
@@ -335,6 +521,8 @@ const authService = {
   getStoredToken,
   saveToken,
   clearToken,
+
+  getAPI,
 };
 
 export default authService;

@@ -4,12 +4,12 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
 
-import authService from "../services/authService.js";
+import { useAuth } from "./AuthContext.jsx";
+
 import bookingService from "../services/bookingService.js";
 import customerService from "../services/customerService.js";
 import foodService from "../services/foodService.js";
@@ -29,18 +29,19 @@ const AppContext = createContext(null);
 export const AppProvider = ({ children }) => {
   /* ===================================================
      AUTH
+     
+     AuthContext is the single source of truth.
   =================================================== */
 
-  const [user, setUser] = useState(() =>
-    authService.getStoredUser()
-  );
-
-  const [isAuthenticated, setIsAuthenticated] =
-    useState(() =>
-      Boolean(authService.getStoredToken())
-    );
-
-  const [authLoading, setAuthLoading] = useState(true);
+  const {
+    user,
+    isAuthenticated,
+    loading: authLoading,
+    login,
+    logout,
+    updateProfile,
+    changePassword,
+  } = useAuth();
 
   /* ===================================================
      GLOBAL DATA
@@ -80,257 +81,97 @@ export const AppProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   /* ===================================================
-     INITIAL AUTH CHECK
+     ERROR MESSAGE HELPER
   =================================================== */
 
-  useEffect(() => {
-    let mounted = true;
-
-    const checkAuthentication = async () => {
-      const token = authService.getStoredToken();
-
-      if (!token) {
-        if (mounted) {
-          setUser(null);
-          setIsAuthenticated(false);
-          setAuthLoading(false);
-        }
-
-        return;
-      }
-
-      try {
-        setAuthLoading(true);
-
-        const response =
-          await authService.getCurrentUser();
-
-        const currentUser =
-          response?.owner ||
-          response?.user ||
-          null;
-
-        if (!currentUser) {
-          throw new Error(
-            "Owner profile not found."
-          );
-        }
-
-        if (mounted) {
-          setUser(currentUser);
-          setIsAuthenticated(true);
-        }
-      } catch (requestError) {
-        console.error(
-          "AUTH CHECK ERROR:",
-          requestError
-        );
-
-        if (
-          requestError?.response?.status === 401 ||
-          requestError?.response?.status === 403
-        ) {
-          authService.clearToken();
-          authService.clearUser();
-
-          if (mounted) {
-            setUser(null);
-            setIsAuthenticated(false);
-          }
-        }
-      } finally {
-        if (mounted) {
-          setAuthLoading(false);
-        }
-      }
-    };
-
-    checkAuthentication();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  /* ===================================================
-     STORAGE SYNC
-  =================================================== */
-
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === "nivetha_anna_user") {
-        const storedUser =
-          authService.getStoredUser();
-
-        setUser(storedUser);
-      }
-
-      if (event.key === "nivetha_anna_token") {
-        const storedToken =
-          authService.getStoredToken();
-
-        setIsAuthenticated(
-          Boolean(storedToken)
-        );
-      }
-    };
-
-    window.addEventListener(
-      "storage",
-      handleStorageChange
-    );
-
-    return () => {
-      window.removeEventListener(
-        "storage",
-        handleStorageChange
+  const getErrorMessage = useCallback(
+    (requestError, fallbackMessage) => {
+      return (
+        requestError?.response?.data?.message ||
+        requestError?.message ||
+        fallbackMessage
       );
-    };
-  }, []);
+    },
+    []
+  );
 
   /* ===================================================
      LOGIN
   =================================================== */
 
-  const login = useCallback(
+  const handleLogin = useCallback(
     async (loginData) => {
       setError(null);
-      setAuthLoading(true);
 
       try {
-        const response =
-          await authService.login(loginData);
-
-        const loggedInUser =
-          response?.owner ||
-          response?.user ||
-          null;
-
-        const loggedInToken =
-          response?.token ||
-          authService.getStoredToken();
-
-        if (!loggedInUser) {
-          throw new Error(
-            "Login successful, but owner data was not returned."
-          );
-        }
-
-        if (!loggedInToken) {
-          throw new Error(
-            "Login successful, but authentication token was not returned."
-          );
-        }
-
-        authService.saveUser(loggedInUser);
-        authService.saveToken(loggedInToken);
-
-        setUser(loggedInUser);
-        setIsAuthenticated(true);
-
-        return {
-          ...response,
-          success: true,
-          owner: loggedInUser,
-          user: loggedInUser,
-          token: loggedInToken,
-        };
+        return await login(loginData);
       } catch (requestError) {
-        console.error(
-          "LOGIN ERROR:",
-          requestError
+        const message = getErrorMessage(
+          requestError,
+          "Login failed"
         );
 
-        setError(
-          requestError?.response?.data?.message ||
-            requestError?.message ||
-            "Login failed"
-        );
+        setError(message);
 
         throw requestError;
-      } finally {
-        setAuthLoading(false);
       }
     },
-    []
+    [login, getErrorMessage]
   );
 
   /* ===================================================
      LOGOUT
   =================================================== */
 
-  const logout = useCallback(() => {
+  const handleLogout = useCallback(() => {
     try {
-      authService.logout();
-    } catch (logoutError) {
-      console.error(
-        "LOGOUT ERROR:",
-        logoutError
-      );
+      logout();
+    } finally {
+      /*
+       * Clear current application data.
+       *
+       * Saved owner profile remains inside AuthContext.
+       */
+      setBookings([]);
+      setCustomers([]);
+      setFoods([]);
+      setNotifications([]);
+      setReports(null);
+      setError(null);
     }
 
-    setUser(null);
-    setIsAuthenticated(false);
-
-    setBookings([]);
-    setCustomers([]);
-    setFoods([]);
-    setNotifications([]);
-    setReports(null);
-  }, []);
+    return true;
+  }, [logout]);
 
   /* ===================================================
      UPDATE PROFILE
   =================================================== */
 
-  const updateProfile = useCallback(
+  const handleUpdateProfile = useCallback(
     async (profileData) => {
       setError(null);
 
       try {
-        const response =
-          await authService.updateProfile(
-            profileData
-          );
-
-        const updatedUser =
-          response?.owner ||
-          response?.user ||
-          null;
-
-        if (updatedUser) {
-          authService.saveUser(updatedUser);
-
-          setUser(updatedUser);
-          setIsAuthenticated(
-            Boolean(authService.getStoredToken())
-          );
-        }
-
-        return response;
+        return await updateProfile(profileData);
       } catch (requestError) {
-        console.error(
-          "UPDATE PROFILE ERROR:",
-          requestError
+        const message = getErrorMessage(
+          requestError,
+          "Failed to update profile"
         );
 
-        setError(
-          requestError?.response?.data?.message ||
-            requestError?.message ||
-            "Failed to update profile"
-        );
+        setError(message);
 
         throw requestError;
       }
     },
-    []
+    [updateProfile, getErrorMessage]
   );
 
   /* ===================================================
      CHANGE PASSWORD
   =================================================== */
 
-  const changePassword = useCallback(
+  const handleChangePassword = useCallback(
     async (
       currentPassword,
       newPassword
@@ -338,26 +179,28 @@ export const AppProvider = ({ children }) => {
       setError(null);
 
       try {
-        return await authService.changePassword(
+        /*
+         * Supports:
+         *
+         * changePassword(currentPassword, newPassword)
+         */
+
+        return await changePassword(
           currentPassword,
           newPassword
         );
       } catch (requestError) {
-        console.error(
-          "CHANGE PASSWORD ERROR:",
-          requestError
+        const message = getErrorMessage(
+          requestError,
+          "Failed to change password"
         );
 
-        setError(
-          requestError?.response?.data?.message ||
-            requestError?.message ||
-            "Failed to change password"
-        );
+        setError(message);
 
         throw requestError;
       }
     },
-    []
+    [changePassword, getErrorMessage]
   );
 
   /* ===================================================
@@ -383,11 +226,12 @@ export const AppProvider = ({ children }) => {
               response?.data ||
               [];
 
-        setBookings(
+        const normalizedBookings =
           Array.isArray(bookingList)
             ? bookingList
-            : []
-        );
+            : [];
+
+        setBookings(normalizedBookings);
 
         return response;
       } catch (requestError) {
@@ -396,17 +240,19 @@ export const AppProvider = ({ children }) => {
           requestError
         );
 
-        setError(
-          requestError?.response?.data?.message ||
-            "Failed to load bookings"
+        const message = getErrorMessage(
+          requestError,
+          "Failed to load bookings"
         );
+
+        setError(message);
 
         throw requestError;
       } finally {
         setBookingsLoading(false);
       }
     },
-    []
+    [getErrorMessage]
   );
 
   const getBookingById = useCallback(
@@ -418,20 +264,23 @@ export const AppProvider = ({ children }) => {
     []
   );
 
+  /*
+   * Anna backend does not provide POST /api/bookings.
+   *
+   * Customer App creates bookings.
+   *
+   * Keep this compatibility method so older components
+   * fail with a clear message instead of an undefined
+   * function.
+   */
+
   const createBooking = useCallback(
-    async (bookingData) => {
-      setError(null);
-
-      const response =
-        await bookingService.createBooking(
-          bookingData
-        );
-
-      await loadBookings();
-
-      return response;
+    async () => {
+      throw new Error(
+        "Anna App does not create bookings. Bookings are created from the Customer App."
+      );
     },
-    [loadBookings]
+    []
   );
 
   const updateBooking = useCallback(
@@ -441,17 +290,28 @@ export const AppProvider = ({ children }) => {
     ) => {
       setError(null);
 
-      const response =
-        await bookingService.updateBooking(
-          bookingId,
-          bookingData
+      try {
+        const response =
+          await bookingService.updateBooking(
+            bookingId,
+            bookingData
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        const message = getErrorMessage(
+          requestError,
+          "Failed to update booking"
         );
 
-      await loadBookings();
+        setError(message);
 
-      return response;
+        throw requestError;
+      }
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const updateBookingStatus = useCallback(
@@ -461,119 +321,207 @@ export const AppProvider = ({ children }) => {
     ) => {
       setError(null);
 
-      const response =
-        await bookingService.updateBookingStatus(
-          bookingId,
-          status
+      try {
+        const response =
+          await bookingService.updateBookingStatus(
+            bookingId,
+            status
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        const message = getErrorMessage(
+          requestError,
+          "Failed to update booking status"
         );
 
-      await loadBookings();
+        setError(message);
 
-      return response;
+        throw requestError;
+      }
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const acceptBooking = useCallback(
     async (bookingId) => {
-      const response =
-        await bookingService.acceptBooking(
-          bookingId
+      setError(null);
+
+      try {
+        const response =
+          await bookingService.acceptBooking(
+            bookingId
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to accept booking"
+          )
         );
 
-      await loadBookings();
-
-      return response;
+        throw requestError;
+      }
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const confirmBooking = useCallback(
     async (bookingId) => {
-      if (
-        typeof bookingService.confirmBooking !==
-        "function"
-      ) {
-        throw new Error(
-          "confirmBooking is not available in bookingService"
+      setError(null);
+
+      try {
+        const response =
+          await bookingService.confirmBooking(
+            bookingId
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to confirm booking"
+          )
         );
+
+        throw requestError;
       }
-
-      const response =
-        await bookingService.confirmBooking(
-          bookingId
-        );
-
-      await loadBookings();
-
-      return response;
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const rejectBooking = useCallback(
-    async (bookingId) => {
-      const response =
-        await bookingService.rejectBooking(
-          bookingId
+    async (
+      bookingId,
+      reason = ""
+    ) => {
+      setError(null);
+
+      try {
+        const response =
+          await bookingService.rejectBooking(
+            bookingId,
+            reason
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to reject booking"
+          )
         );
 
-      await loadBookings();
-
-      return response;
+        throw requestError;
+      }
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const completeBooking = useCallback(
     async (bookingId) => {
-      const response =
-        await bookingService.completeBooking(
-          bookingId
+      setError(null);
+
+      try {
+        const response =
+          await bookingService.completeBooking(
+            bookingId
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to complete booking"
+          )
         );
 
-      await loadBookings();
-
-      return response;
+        throw requestError;
+      }
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const cancelBooking = useCallback(
-    async (bookingId) => {
-      const response =
-        await bookingService.cancelBooking(
-          bookingId
+    async (
+      bookingId,
+      reason = ""
+    ) => {
+      setError(null);
+
+      try {
+        const response =
+          await bookingService.cancelBooking(
+            bookingId,
+            reason
+          );
+
+        await loadBookings();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to cancel booking"
+          )
         );
 
-      await loadBookings();
-
-      return response;
+        throw requestError;
+      }
     },
-    [loadBookings]
+    [loadBookings, getErrorMessage]
   );
 
   const deleteBooking = useCallback(
     async (bookingId) => {
-      const response =
-        await bookingService.deleteBooking(
-          bookingId
+      setError(null);
+
+      try {
+        const response =
+          await bookingService.deleteBooking(
+            bookingId
+          );
+
+        setBookings(
+          (currentBookings) =>
+            currentBookings.filter(
+              (booking) =>
+                String(
+                  booking?._id ||
+                    booking?.id
+                ) !== String(bookingId)
+            )
         );
 
-      setBookings(
-        (currentBookings) =>
-          currentBookings.filter(
-            (booking) =>
-              String(
-                booking?._id ||
-                  booking?.id
-              ) !== String(bookingId)
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to delete booking"
           )
-      );
+        );
 
-      return response;
+        throw requestError;
+      }
     },
-    []
+    [getErrorMessage]
   );
 
   /* ===================================================
@@ -599,11 +547,12 @@ export const AppProvider = ({ children }) => {
               response?.data ||
               [];
 
-        setCustomers(
+        const normalizedCustomers =
           Array.isArray(customerList)
             ? customerList
-            : []
-        );
+            : [];
+
+        setCustomers(normalizedCustomers);
 
         return response;
       } catch (requestError) {
@@ -613,8 +562,10 @@ export const AppProvider = ({ children }) => {
         );
 
         setError(
-          requestError?.response?.data?.message ||
+          getErrorMessage(
+            requestError,
             "Failed to load customers"
+          )
         );
 
         throw requestError;
@@ -622,7 +573,7 @@ export const AppProvider = ({ children }) => {
         setCustomersLoading(false);
       }
     },
-    []
+    [getErrorMessage]
   );
 
   const getCustomerById = useCallback(
@@ -634,18 +585,18 @@ export const AppProvider = ({ children }) => {
     []
   );
 
+  /*
+   * Customer accounts are created from Customer App.
+   * Anna backend intentionally has no POST /customers.
+   */
+
   const createCustomer = useCallback(
-    async (customerData) => {
-      const response =
-        await customerService.createCustomer(
-          customerData
-        );
-
-      await loadCustomers();
-
-      return response;
+    async () => {
+      throw new Error(
+        "Anna App does not create customer accounts. Customers register from the Customer App."
+      );
     },
-    [loadCustomers]
+    []
   );
 
   const updateCustomer = useCallback(
@@ -653,40 +604,66 @@ export const AppProvider = ({ children }) => {
       customerId,
       customerData
     ) => {
-      const response =
-        await customerService.updateCustomer(
-          customerId,
-          customerData
+      setError(null);
+
+      try {
+        const response =
+          await customerService.updateCustomer(
+            customerId,
+            customerData
+          );
+
+        await loadCustomers();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to update customer"
+          )
         );
 
-      await loadCustomers();
-
-      return response;
+        throw requestError;
+      }
     },
-    [loadCustomers]
+    [loadCustomers, getErrorMessage]
   );
 
   const deleteCustomer = useCallback(
     async (customerId) => {
-      const response =
-        await customerService.deleteCustomer(
-          customerId
+      setError(null);
+
+      try {
+        const response =
+          await customerService.deleteCustomer(
+            customerId
+          );
+
+        setCustomers(
+          (currentCustomers) =>
+            currentCustomers.filter(
+              (customer) =>
+                String(
+                  customer?._id ||
+                    customer?.id
+                ) !== String(customerId)
+            )
         );
 
-      setCustomers(
-        (currentCustomers) =>
-          currentCustomers.filter(
-            (customer) =>
-              String(
-                customer?._id ||
-                  customer?.id
-              ) !== String(customerId)
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to delete customer"
           )
-      );
+        );
 
-      return response;
+        throw requestError;
+      }
     },
-    []
+    [getErrorMessage]
   );
 
   const searchCustomers = useCallback(
@@ -719,11 +696,12 @@ export const AppProvider = ({ children }) => {
               response?.data ||
               [];
 
-        setFoods(
+        const normalizedFoods =
           Array.isArray(foodList)
             ? foodList
-            : []
-        );
+            : [];
+
+        setFoods(normalizedFoods);
 
         return response;
       } catch (requestError) {
@@ -733,8 +711,10 @@ export const AppProvider = ({ children }) => {
         );
 
         setError(
-          requestError?.response?.data?.message ||
+          getErrorMessage(
+            requestError,
             "Failed to load foods"
+          )
         );
 
         throw requestError;
@@ -742,7 +722,7 @@ export const AppProvider = ({ children }) => {
         setFoodsLoading(false);
       }
     },
-    []
+    [getErrorMessage]
   );
 
   const loadAvailableFoods = useCallback(
@@ -764,11 +744,12 @@ export const AppProvider = ({ children }) => {
               response?.data ||
               [];
 
-        setFoods(
+        const normalizedFoods =
           Array.isArray(foodList)
             ? foodList
-            : []
-        );
+            : [];
+
+        setFoods(normalizedFoods);
 
         return response;
       } catch (requestError) {
@@ -778,8 +759,10 @@ export const AppProvider = ({ children }) => {
         );
 
         setError(
-          requestError?.response?.data?.message ||
+          getErrorMessage(
+            requestError,
             "Failed to load available foods"
+          )
         );
 
         throw requestError;
@@ -787,28 +770,43 @@ export const AppProvider = ({ children }) => {
         setFoodsLoading(false);
       }
     },
-    []
+    [getErrorMessage]
   );
 
   const getFoodById = useCallback(
     async (foodId) => {
-      return foodService.getFoodById(foodId);
+      return foodService.getFoodById(
+        foodId
+      );
     },
     []
   );
 
   const createFood = useCallback(
     async (foodData) => {
-      const response =
-        await foodService.createFood(
-          foodData
+      setError(null);
+
+      try {
+        const response =
+          await foodService.createFood(
+            foodData
+          );
+
+        await loadFoods();
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to create food"
+          )
         );
 
-      await loadFoods();
-
-      return response;
+        throw requestError;
+      }
     },
-    [loadFoods]
+    [loadFoods, getErrorMessage]
   );
 
   const updateFood = useCallback(
@@ -816,55 +814,94 @@ export const AppProvider = ({ children }) => {
       foodId,
       foodData
     ) => {
-      const response =
-        await foodService.updateFood(
-          foodId,
-          foodData
-        );
+      setError(null);
 
-      await loadFoods();
-
-      return response;
-    },
-    [loadFoods]
-  );
-
-  const toggleFoodAvailability =
-    useCallback(
-      async (foodId) => {
+      try {
         const response =
-          await foodService.toggleFoodAvailability(
-            foodId
+          await foodService.updateFood(
+            foodId,
+            foodData
           );
 
         await loadFoods();
 
         return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to update food"
+          )
+        );
+
+        throw requestError;
+      }
+    },
+    [loadFoods, getErrorMessage]
+  );
+
+  const toggleFoodAvailability =
+    useCallback(
+      async (foodId) => {
+        setError(null);
+
+        try {
+          const response =
+            await foodService.toggleFoodAvailability(
+              foodId
+            );
+
+          await loadFoods();
+
+          return response;
+        } catch (requestError) {
+          setError(
+            getErrorMessage(
+              requestError,
+              "Failed to update food availability"
+            )
+          );
+
+          throw requestError;
+        }
       },
-      [loadFoods]
+      [loadFoods, getErrorMessage]
     );
 
   const deleteFood = useCallback(
     async (foodId) => {
-      const response =
-        await foodService.deleteFood(
-          foodId
+      setError(null);
+
+      try {
+        const response =
+          await foodService.deleteFood(
+            foodId
+          );
+
+        setFoods(
+          (currentFoods) =>
+            currentFoods.filter(
+              (food) =>
+                String(
+                  food?._id ||
+                    food?.id
+                ) !== String(foodId)
+            )
         );
 
-      setFoods(
-        (currentFoods) =>
-          currentFoods.filter(
-            (food) =>
-              String(
-                food?._id ||
-                  food?.id
-              ) !== String(foodId)
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to delete food"
           )
-      );
+        );
 
-      return response;
+        throw requestError;
+      }
     },
-    []
+    [getErrorMessage]
   );
 
   /* ===================================================
@@ -872,15 +909,13 @@ export const AppProvider = ({ children }) => {
   =================================================== */
 
   const loadNotifications = useCallback(
-    async (params = {}) => {
+    async () => {
       setNotificationsLoading(true);
       setError(null);
 
       try {
         const response =
-          await notificationService.getNotifications(
-            params
-          );
+          await notificationService.getNotifications();
 
         const notificationList =
           Array.isArray(response)
@@ -890,10 +925,13 @@ export const AppProvider = ({ children }) => {
               response?.data ||
               [];
 
-        setNotifications(
+        const normalizedNotifications =
           Array.isArray(notificationList)
             ? notificationList
-            : []
+            : [];
+
+        setNotifications(
+          normalizedNotifications
         );
 
         return response;
@@ -904,8 +942,10 @@ export const AppProvider = ({ children }) => {
         );
 
         setError(
-          requestError?.response?.data?.message ||
+          getErrorMessage(
+            requestError,
             "Failed to load notifications"
+          )
         );
 
         throw requestError;
@@ -913,110 +953,194 @@ export const AppProvider = ({ children }) => {
         setNotificationsLoading(false);
       }
     },
-    []
+    [getErrorMessage]
   );
+
+  const getUnreadNotifications =
+    useCallback(async () => {
+      return notificationService.getUnreadNotifications();
+    }, []);
+
+  const getUnreadNotificationCount =
+    useCallback(async () => {
+      return notificationService.getUnreadCount();
+    }, []);
 
   const markNotificationAsRead =
     useCallback(
       async (notificationId) => {
+        setError(null);
+
+        try {
+          const response =
+            await notificationService.markAsRead(
+              notificationId
+            );
+
+          setNotifications(
+            (currentNotifications) =>
+              currentNotifications.map(
+                (notification) =>
+                  String(
+                    notification?._id ||
+                      notification?.id
+                  ) === String(notificationId)
+                    ? {
+                        ...notification,
+                        isRead: true,
+                      }
+                    : notification
+              )
+          );
+
+          return response;
+        } catch (requestError) {
+          setError(
+            getErrorMessage(
+              requestError,
+              "Failed to mark notification as read"
+            )
+          );
+
+          throw requestError;
+        }
+      },
+      [getErrorMessage]
+    );
+
+  const markAllNotificationsAsRead =
+    useCallback(async () => {
+      setError(null);
+
+      try {
         const response =
-          await notificationService.markAsRead(
+          await notificationService.markAllAsRead();
+
+        setNotifications(
+          (currentNotifications) =>
+            currentNotifications.map(
+              (notification) => ({
+                ...notification,
+                isRead: true,
+              })
+            )
+        );
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to mark notifications as read"
+          )
+        );
+
+        throw requestError;
+      }
+    }, [getErrorMessage]);
+
+  const deleteNotification = useCallback(
+    async (notificationId) => {
+      setError(null);
+
+      try {
+        const response =
+          await notificationService.deleteNotification(
             notificationId
           );
 
         setNotifications(
           (currentNotifications) =>
-            currentNotifications.map(
+            currentNotifications.filter(
               (notification) =>
                 String(
                   notification?._id ||
                     notification?.id
-                ) === String(notificationId)
-                  ? {
-                      ...notification,
-                      isRead: true,
-                    }
-                  : notification
+                ) !== String(notificationId)
             )
         );
 
         return response;
-      },
-      []
-    );
-
-  const markAllNotificationsAsRead =
-    useCallback(async () => {
-      const response =
-        await notificationService.markAllAsRead();
-
-      setNotifications(
-        (currentNotifications) =>
-          currentNotifications.map(
-            (notification) => ({
-              ...notification,
-              isRead: true,
-            })
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to delete notification"
           )
-      );
-
-      return response;
-    }, []);
-
-  const deleteNotification = useCallback(
-    async (notificationId) => {
-      const response =
-        await notificationService.deleteNotification(
-          notificationId
         );
 
-      setNotifications(
-        (currentNotifications) =>
-          currentNotifications.filter(
-            (notification) =>
-              String(
-                notification?._id ||
-                  notification?.id
-              ) !== String(notificationId)
-          )
-      );
-
-      return response;
+        throw requestError;
+      }
     },
-    []
+    [getErrorMessage]
   );
+
+  const deleteReadNotifications =
+    useCallback(async () => {
+      setError(null);
+
+      try {
+        const response =
+          await notificationService.deleteReadNotifications();
+
+        setNotifications(
+          (currentNotifications) =>
+            currentNotifications.filter(
+              (notification) =>
+                !notification?.isRead
+            )
+        );
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to delete read notifications"
+          )
+        );
+
+        throw requestError;
+      }
+    }, [getErrorMessage]);
 
   const deleteAllNotifications =
     useCallback(async () => {
-      const response =
-        await notificationService.deleteAllNotifications();
+      setError(null);
 
-      setNotifications([]);
+      try {
+        const response =
+          await notificationService.deleteAllNotifications();
 
-      return response;
-    }, []);
+        setNotifications([]);
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to delete notifications"
+          )
+        );
+
+        throw requestError;
+      }
+    }, [getErrorMessage]);
 
   /* ===================================================
      REPORTS
   =================================================== */
 
-  const loadDashboardReport =
-    useCallback(async () => {
+  const getBookingReport = useCallback(
+    async (params = {}) => {
       setReportsLoading(true);
       setError(null);
 
       try {
-        if (
-          typeof reportService.getDashboardReport !==
-          "function"
-        ) {
-          throw new Error(
-            "getDashboardReport is not available in reportService"
-          );
-        }
-
         const response =
-          await reportService.getDashboardReport();
+          await reportService.getBookingReport(
+            params
+          );
 
         const reportData =
           response?.report ||
@@ -1027,67 +1151,107 @@ export const AppProvider = ({ children }) => {
 
         return response;
       } catch (requestError) {
-        console.error(
-          "LOAD DASHBOARD REPORT ERROR:",
-          requestError
-        );
-
         setError(
-          requestError?.response?.data?.message ||
-            "Failed to load dashboard report"
+          getErrorMessage(
+            requestError,
+            "Failed to load booking report"
+          )
         );
 
         throw requestError;
       } finally {
         setReportsLoading(false);
       }
-    }, []);
-
-  const getBookingReport = useCallback(
-    async (params = {}) => {
-      return reportService.getBookingReport(
-        params
-      );
     },
-    []
+    [getErrorMessage]
   );
 
-  const getCustomerReport = useCallback(
-    async (params = {}) => {
-      return reportService.getCustomerReport(
-        params
-      );
-    },
-    []
-  );
+  const getFunctionReport = useCallback(
+    async () => {
+      setReportsLoading(true);
+      setError(null);
 
-  const getFoodReport = useCallback(
-    async (params = {}) => {
-      return reportService.getFoodReport(
-        params
-      );
-    },
-    []
-  );
+      try {
+        const response =
+          await reportService.getFunctionReport();
 
-  const exportReport = useCallback(
-    async (
-      type,
-      params = {}
-    ) => {
-      if (
-        typeof reportService.exportReport !==
-        "function"
-      ) {
-        throw new Error(
-          "exportReport is not available in reportService"
+        const reportData =
+          response?.report ||
+          response?.data ||
+          response;
+
+        setReports(reportData);
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to load function report"
+          )
         );
-      }
 
-      return reportService.exportReport(
-        type,
-        params
-      );
+        throw requestError;
+      } finally {
+        setReportsLoading(false);
+      }
+    },
+    [getErrorMessage]
+  );
+
+  const getDateReport = useCallback(
+    async () => {
+      setReportsLoading(true);
+      setError(null);
+
+      try {
+        const response =
+          await reportService.getDateReport();
+
+        const reportData =
+          response?.report ||
+          response?.data ||
+          response;
+
+        setReports(reportData);
+
+        return response;
+      } catch (requestError) {
+        setError(
+          getErrorMessage(
+            requestError,
+            "Failed to load date report"
+          )
+        );
+
+        throw requestError;
+      } finally {
+        setReportsLoading(false);
+      }
+    },
+    [getErrorMessage]
+  );
+
+  /*
+   * Compatibility alias.
+   *
+   * Dashboard statistics are provided by:
+   * /api/dashboard/stats
+   *
+   * That endpoint belongs to dashboardService/controller,
+   * not reportService.
+   *
+   * This method intentionally does not call a nonexistent
+   * reportService.getDashboardReport().
+   */
+
+  const loadDashboardReport = useCallback(
+    async () => {
+      return {
+        success: false,
+        message:
+          "Dashboard statistics are loaded by the dashboard module.",
+      };
     },
     []
   );
@@ -1108,15 +1272,14 @@ export const AppProvider = ({ children }) => {
     () => ({
       /* Auth */
       user,
-      setUser,
       isAuthenticated,
       authLoading,
 
-      login,
-      logout,
+      login: handleLogin,
+      logout: handleLogout,
 
-      updateProfile,
-      changePassword,
+      updateProfile: handleUpdateProfile,
+      changePassword: handleChangePassword,
 
       /* Global */
       error,
@@ -1126,11 +1289,14 @@ export const AppProvider = ({ children }) => {
       bookings,
       setBookings,
       bookingsLoading,
+
       loadBookings,
       getBookingById,
+
       createBooking,
       updateBooking,
       updateBookingStatus,
+
       acceptBooking,
       confirmBooking,
       rejectBooking,
@@ -1142,6 +1308,7 @@ export const AppProvider = ({ children }) => {
       customers,
       setCustomers,
       customersLoading,
+
       loadCustomers,
       getCustomerById,
       createCustomer,
@@ -1153,6 +1320,7 @@ export const AppProvider = ({ children }) => {
       foods,
       setFoods,
       foodsLoading,
+
       loadFoods,
       loadAvailableFoods,
       getFoodById,
@@ -1165,33 +1333,38 @@ export const AppProvider = ({ children }) => {
       notifications,
       setNotifications,
       notificationsLoading,
+
       loadNotifications,
+      getUnreadNotifications,
+      getUnreadNotificationCount,
       markNotificationAsRead,
       markAllNotificationsAsRead,
       deleteNotification,
+      deleteReadNotifications,
       deleteAllNotifications,
 
       /* Reports */
       reports,
       setReports,
       reportsLoading,
+
       loadDashboardReport,
       getBookingReport,
-      getCustomerReport,
-      getFoodReport,
-      exportReport,
+      getFunctionReport,
+      getDateReport,
     }),
     [
       user,
       isAuthenticated,
       authLoading,
 
-      login,
-      logout,
-      updateProfile,
-      changePassword,
+      handleLogin,
+      handleLogout,
+      handleUpdateProfile,
+      handleChangePassword,
 
       error,
+      clearError,
 
       bookings,
       bookingsLoading,
@@ -1208,7 +1381,6 @@ export const AppProvider = ({ children }) => {
       reports,
       reportsLoading,
 
-      clearError,
       loadBookings,
       getBookingById,
       createBooking,
@@ -1237,16 +1409,18 @@ export const AppProvider = ({ children }) => {
       deleteFood,
 
       loadNotifications,
+      getUnreadNotifications,
+      getUnreadNotificationCount,
       markNotificationAsRead,
       markAllNotificationsAsRead,
       deleteNotification,
+      deleteReadNotifications,
       deleteAllNotifications,
 
       loadDashboardReport,
       getBookingReport,
-      getCustomerReport,
-      getFoodReport,
-      exportReport,
+      getFunctionReport,
+      getDateReport,
     ]
   );
 

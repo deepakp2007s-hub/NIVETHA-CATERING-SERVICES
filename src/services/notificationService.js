@@ -24,7 +24,6 @@ const notificationAPI = axios.create({
 
 /* =====================================================
    REQUEST INTERCEPTOR
-   Automatically sends owner JWT token
 ===================================================== */
 
 notificationAPI.interceptors.request.use(
@@ -39,9 +38,31 @@ notificationAPI.interceptors.request.use(
 
     return config;
   },
+  (error) =>
+    Promise.reject(error)
+);
+
+/* =====================================================
+   RESPONSE INTERCEPTOR
+===================================================== */
+
+notificationAPI.interceptors.response.use(
+  (response) => response,
   (error) => {
+    if (
+      error?.response?.status === 401
+    ) {
+      localStorage.removeItem(
+        "nivetha_anna_token"
+      );
+
+      localStorage.removeItem(
+        "nivetha_anna_user"
+      );
+    }
+
     return Promise.reject(error);
-  },
+  }
 );
 
 /* =====================================================
@@ -49,16 +70,16 @@ notificationAPI.interceptors.request.use(
 ===================================================== */
 
 const handleResponse = (response) => {
-  if (!response || !response.data) {
+  if (!response?.data) {
     throw new Error(
-      "Invalid server response",
+      "Invalid server response"
     );
   }
 
   if (response.data.success === false) {
     throw new Error(
       response.data.message ||
-        "Notification request failed",
+        "Notification request failed"
     );
   }
 
@@ -66,8 +87,7 @@ const handleResponse = (response) => {
 };
 
 /* =====================================================
-   GET ALL OWNER NOTIFICATIONS
-   GET /api/notifications
+   GET ALL NOTIFICATIONS
 ===================================================== */
 
 const getNotifications = async () => {
@@ -80,7 +100,7 @@ const getNotifications = async () => {
     console.error(
       "Get Owner Notifications Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -88,8 +108,7 @@ const getNotifications = async () => {
 };
 
 /* =====================================================
-   GET UNREAD OWNER NOTIFICATIONS
-   GET /api/notifications/unread
+   GET UNREAD NOTIFICATIONS
 ===================================================== */
 
 const getUnreadNotifications =
@@ -97,7 +116,7 @@ const getUnreadNotifications =
     try {
       const response =
         await notificationAPI.get(
-          "/unread",
+          "/unread"
         );
 
       return handleResponse(response);
@@ -105,7 +124,7 @@ const getUnreadNotifications =
       console.error(
         "Get Unread Notifications Error:",
         error?.response?.data ||
-          error?.message,
+          error?.message
       );
 
       throw error;
@@ -114,14 +133,13 @@ const getUnreadNotifications =
 
 /* =====================================================
    GET UNREAD COUNT
-   GET /api/notifications/unread-count
 ===================================================== */
 
 const getUnreadCount = async () => {
   try {
     const response =
       await notificationAPI.get(
-        "/unread-count",
+        "/unread-count"
       );
 
     return handleResponse(response);
@@ -129,7 +147,7 @@ const getUnreadCount = async () => {
     console.error(
       "Get Unread Notification Count Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -138,22 +156,21 @@ const getUnreadCount = async () => {
 
 /* =====================================================
    GET SINGLE NOTIFICATION
-   GET /api/notifications/:id
 ===================================================== */
 
 const getNotificationById = async (
-  id,
+  id
 ) => {
   if (!id) {
     throw new Error(
-      "Notification ID is required",
+      "Notification ID is required"
     );
   }
 
   try {
     const response =
       await notificationAPI.get(
-        `/${id}`,
+        `/${id}`
       );
 
     return handleResponse(response);
@@ -161,43 +178,7 @@ const getNotificationById = async (
     console.error(
       "Get Notification Error:",
       error?.response?.data ||
-        error?.message,
-    );
-
-    throw error;
-  }
-};
-
-/* =====================================================
-   CREATE OWNER NOTIFICATION
-   POST /api/notifications
-===================================================== */
-
-const createNotification = async (
-  notificationData,
-) => {
-  if (
-    !notificationData ||
-    typeof notificationData !== "object"
-  ) {
-    throw new Error(
-      "Notification data is required",
-    );
-  }
-
-  try {
-    const response =
-      await notificationAPI.post(
-        "/",
-        notificationData,
-      );
-
-    return handleResponse(response);
-  } catch (error) {
-    console.error(
-      "Create Owner Notification Error:",
-      error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -206,20 +187,19 @@ const createNotification = async (
 
 /* =====================================================
    MARK ONE AS READ
-   PATCH /api/notifications/:id/read
 ===================================================== */
 
 const markAsRead = async (id) => {
   if (!id) {
     throw new Error(
-      "Notification ID is required",
+      "Notification ID is required"
     );
   }
 
   try {
     const response =
       await notificationAPI.patch(
-        `/${id}/read`,
+        `/${id}/read`
       );
 
     return handleResponse(response);
@@ -227,7 +207,7 @@ const markAsRead = async (id) => {
     console.error(
       "Mark Notification As Read Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -236,14 +216,13 @@ const markAsRead = async (id) => {
 
 /* =====================================================
    MARK ALL AS READ
-   PATCH /api/notifications/read-all
 ===================================================== */
 
 const markAllAsRead = async () => {
   try {
     const response =
       await notificationAPI.patch(
-        "/read-all",
+        "/read-all"
       );
 
     return handleResponse(response);
@@ -251,7 +230,7 @@ const markAllAsRead = async () => {
     console.error(
       "Mark All Notifications As Read Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -260,22 +239,21 @@ const markAllAsRead = async () => {
 
 /* =====================================================
    DELETE ONE NOTIFICATION
-   DELETE /api/notifications/:id
 ===================================================== */
 
 const deleteNotification = async (
-  id,
+  id
 ) => {
   if (!id) {
     throw new Error(
-      "Notification ID is required",
+      "Notification ID is required"
     );
   }
 
   try {
     const response =
       await notificationAPI.delete(
-        `/${id}`,
+        `/${id}`
       );
 
     return handleResponse(response);
@@ -283,7 +261,7 @@ const deleteNotification = async (
     console.error(
       "Delete Notification Error:",
       error?.response?.data ||
-        error?.message,
+        error?.message
     );
 
     throw error;
@@ -292,7 +270,6 @@ const deleteNotification = async (
 
 /* =====================================================
    DELETE READ NOTIFICATIONS
-   DELETE /api/notifications/read
 ===================================================== */
 
 const deleteReadNotifications =
@@ -300,7 +277,7 @@ const deleteReadNotifications =
     try {
       const response =
         await notificationAPI.delete(
-          "/read",
+          "/read"
         );
 
       return handleResponse(response);
@@ -308,7 +285,7 @@ const deleteReadNotifications =
       console.error(
         "Delete Read Notifications Error:",
         error?.response?.data ||
-          error?.message,
+          error?.message
       );
 
       throw error;
@@ -317,7 +294,6 @@ const deleteReadNotifications =
 
 /* =====================================================
    DELETE ALL NOTIFICATIONS
-   DELETE /api/notifications/all
 ===================================================== */
 
 const deleteAllNotifications =
@@ -325,7 +301,7 @@ const deleteAllNotifications =
     try {
       const response =
         await notificationAPI.delete(
-          "/all",
+          "/all"
         );
 
       return handleResponse(response);
@@ -333,7 +309,7 @@ const deleteAllNotifications =
       console.error(
         "Delete All Notifications Error:",
         error?.response?.data ||
-          error?.message,
+          error?.message
       );
 
       throw error;
@@ -349,13 +325,18 @@ const notificationService = {
   getUnreadNotifications,
   getUnreadCount,
   getNotificationById,
-  createNotification,
+
   markAsRead,
   markAllAsRead,
+
   deleteNotification,
   deleteReadNotifications,
   deleteAllNotifications,
 };
+
+/* =====================================================
+   DEFAULT EXPORT
+===================================================== */
 
 export default notificationService;
 
@@ -368,9 +349,10 @@ export {
   getUnreadNotifications,
   getUnreadCount,
   getNotificationById,
-  createNotification,
+
   markAsRead,
   markAllAsRead,
+
   deleteNotification,
   deleteReadNotifications,
   deleteAllNotifications,

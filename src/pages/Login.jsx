@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext.jsx";
+import authService from "../services/authService.js";
 
 import "./Login.css";
 
@@ -123,10 +124,76 @@ const Login = () => {
     setError("");
 
     try {
-      await login({
-        phone,
-        password,
-      });
+      /*
+       * STEP 1
+       *
+       * Call backend through authService.
+       *
+       * Backend:
+       * POST /api/auth/login
+       */
+
+      const response =
+        await authService.login({
+          phone,
+          password,
+        });
+
+      /*
+       * STEP 2
+       *
+       * authService already normalizes:
+       *
+       * response.owner
+       * response.user
+       * response.token
+       */
+
+      const owner =
+        response?.owner ||
+        response?.user ||
+        null;
+
+      const token =
+        response?.token ||
+        null;
+
+      /* ---------------------------------------------
+         RESPONSE VALIDATION
+      --------------------------------------------- */
+
+      if (!owner) {
+        throw new Error(
+          "Login successful, but owner information was not received."
+        );
+      }
+
+      if (!token) {
+        throw new Error(
+          "Login successful, but authentication token was not received."
+        );
+      }
+
+      /*
+       * STEP 3
+       *
+       * Send token + owner to AuthContext.
+       */
+
+      const authSuccess =
+        login(token, owner);
+
+      if (!authSuccess) {
+        throw new Error(
+          "Authentication session could not be created."
+        );
+      }
+
+      /*
+       * STEP 4
+       *
+       * Login complete.
+       */
 
       navigate(from, {
         replace: true,
